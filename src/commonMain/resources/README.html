@@ -1,0 +1,303 @@
+<html>
+<head>
+    <style>
+    body {
+        background: #2A2D3E;
+        color: rgba(255,255,255,0.75);
+        font-family: sans-serif;
+        padding: 2em;
+        max-width: 1024px;
+        margin: auto;
+    }
+
+    h1,h2,h3,h4,h5,h6 {
+        color: rgba(255,255,255,0.9);
+    }
+
+    a:link, a:visited {
+        color: rgba(187,216,249,0.84)
+    }
+
+    pre {
+        border: 1px solid rgba(174,174,174,0.35);
+        border-radius:0.4em;
+        padding: 1em;
+        background: rgba(81,131,172,0.26);
+        font-family: monospace;
+        overflow: auto;
+        -webkit-overflow-scrolling: touch;
+        max-width: calc(100% - 4em);
+    }
+
+    img {
+        max-width: 100%;
+    }
+    </style>
+    <title>Creature's Breed-Util</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+</head>
+<body>
+<h1 id="creature-s-breed-util">Creature&#39;s Breed Util</h1>
+<p>Command line tool for handling breed conversions for the Creatures games</p>
+<h2 id="basic-information">Basic Information</h2>
+<p>This is a command line program, and must be run from the CMD program on Windows or terminal on unix.
+    Be aware of your current working directory as all non-absolute paths will be relative to it.</p>
+<hr>
+<h3 id="install">Install</h3>
+<p><strong>EXE version: (Windows only)</strong><br>There is a windows release that does not require node. To use it:</p>
+<ol>
+    <li>Navigate to the <a href="https://github.com/bedalton/creatures-breed-util/releases">Breed Util Releases</a> page
+        on GitHub
+    </li>
+    <li>Download the most recent <code>breed-util(exe).zip</code> file from the releases page</li>
+    <li>Extract the contents and copy to the folder of your choosing.</li>
+    <li>(Optional) Add this directory to your PATH variable, so it can be referenced from anywhere</li>
+</ol>
+<p>Executable can be referenced by absolute path or relative path if not added to the system PATH variable.</p>
+<p><strong>NodeJS Version: (all OS&#39;s)</strong><br>There is a NodeJS version that will work on non-windows platforms.
+    To use, NodeJS must be installed.</p>
+<p>To download node, visit <a href="https://nodejs.org/en/download/">node&#39;s downloads page</a></p>
+<p>After installing NodeJS, the breed util can be installed through terminal using:<br><code>npm install -g
+    @bedalton/breed-util</code></p>
+<hr>
+<h2 id="guided-breed-conversion">Guided Breed Conversion</h2>
+<p>When converting a breed, one can launch the exe without arguments and follow the command prompts
+    When asking for a folder or file, one can drag the file or folder from Explorer into the command prompt window</p>
+<p><strong>Note</strong> Though this program converts the images and base ATTs, additional editing to ATTs may be
+    necessary
+    to allow for seamless breeding between your converted breed and existing breeds in your target game.</p>
+<hr>
+<p>The <code>breed-util</code> utility allows for the following sub-commands:</p>
+<h3 id="base-commands">Base Commands</h3>
+<p><strong><a href="#Guided Breed Conversion">ask</a></strong><br>Use question and answer based breed conversion</p>
+<p><strong><a href="#convert-breed">convert-breed</a></strong><br>Convert a breed&#39;s images (and optionally its ATTs)
+    from one game to another</p>
+<p><strong><a href="#alter-genome">alter-genome</a></strong><br>Alter the appearance genes of Creatures genome</p>
+<pre><code>Usage: 
+    breed-util ask
+    breed-util convert-breed [options_list] inputFiles...
+    breed-util <span class="hljs-keyword">alter</span>-genome [options_list]
+
+Subcommands: 
+    ask - Guided conversion <span class="hljs-keyword">of</span> a breed <span class="hljs-keyword">using</span> quesions/prompts
+    <span class="hljs-keyword">convert</span>-breed - <span class="hljs-keyword">Convert</span> breed files <span
+            class="hljs-keyword">between</span> game formats
+    <span class="hljs-keyword">alter</span>-genome - <span class="hljs-keyword">Alter</span> appearance genes <span
+            class="hljs-keyword">in</span> a Creatures genome
+
+Options: 
+    <span class="hljs-comment">--help -&gt; </span>
+        <span class="hljs-keyword">Usage</span> info <span class="hljs-keyword">for</span> base command <span
+            class="hljs-string">`breed-util --help`</span>,
+        <span class="hljs-keyword">or</span> <span class="hljs-keyword">child</span> command. i.e. <span
+            class="hljs-string">`breed-util convert-breed --help`</span>
+</code></pre>
+<h3 id="input-files">Input Files</h3>
+<p><strong>Paths</strong><br>Paths can be relative to the current working directory or absolute
+    On windows paths can use either <code>\\</code> or <code>/</code> to separate path components</p>
+<p>Any time a file or folder is needed, you may drag one into the command line window</p>
+<hr>
+<p>The <strong>inputFiles</strong> argument contains one or any mix of the following:</p>
+<ul>
+    <li>Individual file names</li>
+    <li>Directories</li>
+    <li>Glob patterns. i.e. <code>Frost-Grendel/*.spr</code></li>
+</ul>
+<p><strong>Files are:</strong></p>
+<ul>
+    <li>Used in the order they are defined</li>
+    <li>If input is a folder or glob, files are sorted in the following order
+        <ul>
+            <li>Folders</li>
+            <li>File name without leading or trailing numbers</li>
+            <li>Leading numbers</li>
+            <li>Trailing numbers</li>
+        </ul>
+    </li>
+</ul>
+<p><strong>Note</strong> The numbers in the file name are <strong>sorted numerically not by text</strong>.<br>So:</p>
+<pre><code><span class="hljs-built_in">file</span><span class="hljs-number">-033</span>
+<span class="hljs-built_in">file</span><span class="hljs-number">-3</span>
+<span class="hljs-built_in">file</span><span class="hljs-number">-20</span>
+</code></pre>
+<p>Would be sorted as</p>
+<pre><code><span class="hljs-built_in">file</span><span class="hljs-number">-3</span>
+<span class="hljs-built_in">file</span><span class="hljs-number">-20</span>
+<span class="hljs-built_in">file</span><span class="hljs-number">-033</span>
+</code></pre>
+<p>And:</p>
+<pre><code><span class="hljs-number">01</span>-file<span class="hljs-number">-3</span>
+<span class="hljs-number">20</span>-aFile<span class="hljs-number">-033</span>
+<span class="hljs-number">02</span>-aFile<span class="hljs-number">-20</span>
+</code></pre>
+<p>Would be sorted as</p>
+<pre><code><span class="hljs-number">02</span>-aFile<span class="hljs-number">-20</span>
+<span class="hljs-number">20</span>-aFile<span class="hljs-number">-033</span>
+<span class="hljs-number">01</span>-file<span class="hljs-number">-3</span>
+</code></pre>
+<p>Because <code>aFile</code> comes before <code>file</code> when sorted by text, and is evaluated before leading number
+</p>
+<hr>
+<h2 id="convert-breed">Convert-Breed</h2>
+<p>Converts a breed&#39;s sprites from one game to another and optionally its ATTs as well</p>
+<p>For C1 to/from C2 or C2e conversions, the tail parts are
+    automatically reversed as is needed for C1 tails to the other games and vice-versa</p>
+<p><strong>Progressive Arms</strong>
+    C1/C2 breeds only have one front facing pose, so when converted, norns will appear to stare straight at the camera
+    while not moving.</p>
+<p>Progressive arms adds front facing arm poses for C1/C2 conversions to C3DS. It does so using the side views of the
+    arms.</p>
+<p><img src="data:image/png;base64,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"
+        alt="Two images of a male C1 horse norn. One with his arm across his stomach, and the another with an arm raised up as if saying hi">
+</p>
+<p><strong>Missing Tails:</strong> Empty tail sprite and optionally ATTs will be generated automatically
+    if the C1 breed does not have one defined</p>
+<p><strong>Note:</strong> This utility does <strong>not</strong> support <strong>Creatures Village/Adventure</strong> in
+    any direction</p>
+<p><strong>Alter Genome</strong>
+    Optionally an existing genome for the target game can have its appearance genes altered
+    Genome alteration also alters the sleep pose between C1e and C2e conversions to prevent
+    creatures from sleeping/dying standing up<br><em>\</em>note:<em> This program does not convert a genome, it simply
+        alters an existing genome for the target game<br>i.e. If converting to C3, you must supply an existing C3
+        genome. </em>No conversion is done*</p>
+<pre><code><span class="hljs-type">Usage</span>: breed-util convert-breed target-game [options_list] inputFiles...
+<span class="hljs-type">Arguments</span>: 
+    target-game -&gt; <span class="hljs-type">Target</span> game <span
+            class="hljs-keyword">for</span> breed files [<span class="hljs-type">C1</span>, <span
+            class="hljs-type">C2</span>, <span class="hljs-type">C3</span>]
+    images -&gt; space separated <span class="hljs-built_in">list</span> <span class="hljs-keyword">of</span> image files <span
+            class="hljs-keyword">or</span> folders
+<span class="hljs-type">Options</span>: 
+    --from, -<span class="hljs-type">Input</span> sprite's game variant [<span class="hljs-type">C1</span>|<span
+            class="hljs-type">C2</span>|<span class="hljs-type">C3</span>]
+    --encoding, -c -&gt; <span class="hljs-type">Sprite</span> color encoding [<span
+            class="hljs-number">555</span>, <span class="hljs-number">565</span>]
+    --genus, -g -&gt; <span class="hljs-type">The</span> output genus: [n]orn, [g]rendel, [e]ttin, [s]hee, geat
+    --breed, -b -&gt; <span class="hljs-type">The</span> output breed slot <span class="hljs-keyword">for</span> these body parts
+    --input-genus -&gt; <span class="hljs-type">The</span> genus <span class="hljs-keyword">to</span> filter input files by
+    --input-breed -&gt; <span class="hljs-type">The</span> breed <span class="hljs-keyword">to</span> filter input files by
+    --force, -f [<span class="hljs-literal">false</span>] -&gt; <span class="hljs-type">Force</span> overwrite <span
+            class="hljs-keyword">of</span> existing files
+    --progressive [<span class="hljs-literal">false</span>] -&gt; <span class="hljs-type">Use</span> non-linear mapping <span
+            class="hljs-keyword">of</span> <span class="hljs-type">C1e</span> <span class="hljs-keyword">to</span> <span
+            class="hljs-type">C2e</span> parts <span class="hljs-keyword">to</span> fake front facing tilt
+    --keep-ages [<span class="hljs-literal">false</span>] -&gt; <span class="hljs-type">Do</span> not shift ages <span
+            class="hljs-keyword">to</span> <span class="hljs-keyword">match</span> target game
+    --skip-existing, -x [<span class="hljs-literal">false</span>] -&gt; <span class="hljs-type">Skip</span> existing files 
+    --no-tail [<span class="hljs-literal">false</span>] -&gt; <span class="hljs-type">Do</span> not create tail files (even <span
+            class="hljs-keyword">if</span> none are present)
+    --ignore-errors, -e [<span class="hljs-literal">false</span>] -&gt; <span class="hljs-type">Ignore</span> all compilation errors. <span
+            class="hljs-type">Other</span> errors will still cancel compile
+    --quiet, -q [<span class="hljs-literal">false</span>] -&gt; <span class="hljs-type">Silence</span> non-essential output 
+    --progress, -p [<span class="hljs-literal">false</span>] -&gt; <span class="hljs-type">Output</span> file conversion progress 
+    --att-dir, -a -&gt; <span class="hljs-type">The</span> location <span class="hljs-keyword">of</span> atts <span
+            class="hljs-keyword">to</span> convert <span class="hljs-keyword">if</span> desired
+    --output, -o -&gt; <span class="hljs-type">Output</span> folder <span class="hljs-keyword">for</span> the converted breed files
+    --samesize, -z [<span class="hljs-literal">false</span>] -&gt; <span class="hljs-type">Make</span> all frames <span
+            class="hljs-keyword">in</span> a body part the same size
+    --input-genome -&gt; <span class="hljs-type">Input</span> genome file <span class="hljs-keyword">to</span> alter appearance genes <span
+            class="hljs-keyword">for</span>
+    --output-genome -&gt; <span class="hljs-type">Altered</span> genome output file path
+    --help, -h -&gt; <span class="hljs-type">Usage</span> info 
+<span class="hljs-type">Help</span>:
+    --help, -h -&gt; <span class="hljs-type">Usage</span> info
+</code></pre>
+<h3 id="example-usage">Example usage</h3>
+<p><strong># Example 1: Convert a breed &quot;simple&quot;</strong>
+    The following would convert a breed&#39;s sprites to C3, keeping the genus, age and breed slot the same</p>
+<pre><code class="lang-console"><span class="hljs-keyword">breed-util </span>convert-<span
+        class="hljs-keyword">breed </span><span class="hljs-built_in">C3</span> Images<span class="hljs-comment">/*0*8.spr Images/*4*8.spr</span>
+</code></pre>
+<p><strong># Example 1: Change slot</strong>
+    The following code would produce a C3 compatible breed sprites in <code>ettin slot z</code> from a <code>norn slot
+        8</code></p>
+<pre><code class="lang-console"><span class="hljs-keyword">breed-util </span>convert-<span
+        class="hljs-keyword">breed </span><span class="hljs-built_in">C3</span> --genus ettin --<span
+        class="hljs-keyword">breed </span>z Images<span class="hljs-comment">/*0*8.spr Images/*4*8.spr</span>
+</code></pre>
+<p><strong># Example 3: Convert ATTs</strong>
+    To convert ATTs in addition to sprites, use the <code>--att-dir, -a</code> option followed by the ATT directory
+    So to convert a <code>norn slot 8</code> breed from C1 to C3 <code>ettin slot z</code> you would use:</p>
+<pre><code class="lang-console"><span class="hljs-keyword">breed-util </span>convert-<span
+        class="hljs-keyword">breed </span><span class="hljs-built_in">C3</span> --genus ettin --<span
+        class="hljs-keyword">breed </span>z --att-dir <span class="hljs-string">"Body Data"</span> Images<span
+        class="hljs-comment">/*0*8.spr Images/*4*8.spr</span>
+</code></pre>
+<p><strong>NOTE</strong> Despite the ATTs being converted automatically.
+    Care should be taken to edit head and body sprites converted from C1/C2 as the
+    tail, hair and ear positions will be set to <code>0,0</code>. This will be very noticeable when bred with other
+    breeds</p>
+<p><strong># Example 4: Without tail</strong>
+    The prior commands will produce tail sprites (and atts if --att-dir is set)
+    by default if one does not exist for the breed.<br>To prevent this, use the <code>--no-tail</code> flag.<br>The
+    following would produce norn sprites and ATTs for parts <code>a</code> to <code>l</code>, but not <code>m</code> or
+    <code>n</code>.</p>
+<pre><code class="lang-console"><span class="hljs-keyword">breed-util </span>convert-<span
+        class="hljs-keyword">breed </span><span class="hljs-built_in">C3</span> --genus ettin --<span
+        class="hljs-keyword">breed </span>z --no-tail --att-dir <span class="hljs-string">"Body Data"</span> Images<span
+        class="hljs-comment">/*0*8.spr Images/*4*8.spr</span>
+</code></pre>
+<p><strong># Example 5: Remap a breed</strong><br>You can technically remap a breed by passing in the same game as the
+    one it is for, but with different slot information<br>The following would create a copy of norn slot <code>a</code>
+    into ettin slot <code>z</code>;
+    ** Be sure to include the <code>--att-dir</code> flag or the body data will not be remapped</p>
+<pre><code class="lang-console"><span class="hljs-keyword">breed-util </span>convert-<span
+        class="hljs-keyword">breed </span><span class="hljs-built_in">C3</span> --genus ettin --<span
+        class="hljs-keyword">breed </span>z --att-dir <span class="hljs-string">"Body Data"</span> Images<span
+        class="hljs-comment">/*0*a.c16 Images/*4*a.c16</span>
+</code></pre>
+<hr>
+<h2 id="alter-genome">Alter-Genome</h2>
+<p>The alter genome command, alters a genome&#39;s appearance genes.
+    This allows you to set different genus/breeds per part</p>
+<p>Appearance genes follow the format: <code>{genus}:{breed}</code>.<br>Genus can be <code>norn</code> or <code>n</code>,
+    <code>grendel</code> or <code>g</code>, <code>ettin</code> or <code>e</code>, <code>geat</code> or <code>shee</code>
+    or <code>s</code>.<br><strong>NOTE:</strong> The shorthand for GEAT is &#39;<strong>S</strong>&#39; not &#39;G&#39;.
+    <strong>&#39;G&#39; is for Grendel only</strong></p>
+<pre><code class="lang-SHELL">Arguments: 
+    <span class="hljs-function"><span class="hljs-title">input</span>-genome -&gt;</span> The genome to alter { String }
+Options: 
+    --<span class="hljs-function"><span class="hljs-title">output</span>-genome -&gt;</span> Altered genome output file <span
+            class="hljs-built_in">path</span> { String }
+    --<span class="hljs-function"><span class="hljs-title">genus</span>, -g -&gt;</span> The output genus: [n]orn, [g]rendel, [e]ttin, [s]hee, geat { Value should be one of [n, norn, g, grendel, e, ettin, s, shee, geat] }
+    --<span class="hljs-function"><span class="hljs-title">breed</span>, -b -&gt;</span> The default breed slot <span
+            class="hljs-keyword">for</span> all body parts { String }
+    --<span class="hljs-function"><span class="hljs-title">head</span> -&gt;</span> Breed <span
+            class="hljs-keyword">for</span> head Expected pattern  <span class="hljs-string">"norn:a"</span> <span
+            class="hljs-built_in">or</span> <span class="hljs-string">"n:z"</span>; <span
+            class="hljs-string">'g:'</span> <span class="hljs-keyword">is</span> grendel. use <span class="hljs-string">'s:'</span> <span
+            class="hljs-keyword">for</span> geat
+    --<span class="hljs-function"><span class="hljs-title">body</span> -&gt;</span> Breed <span
+            class="hljs-keyword">for</span> body Expected pattern  <span class="hljs-string">"norn:a"</span> <span
+            class="hljs-built_in">or</span> <span class="hljs-string">"n:z"</span>
+    --<span class="hljs-function"><span class="hljs-title">legs</span> -&gt;</span> Breed <span
+            class="hljs-keyword">for</span> legs Expected pattern  <span class="hljs-string">"norn:a"</span> <span
+            class="hljs-built_in">or</span> <span class="hljs-string">"n:z"</span>
+    --<span class="hljs-function"><span class="hljs-title">arms</span> -&gt;</span> Breed <span
+            class="hljs-keyword">for</span> arms Expected pattern  <span class="hljs-string">"norn:a"</span> <span
+            class="hljs-built_in">or</span> <span class="hljs-string">"n:z"</span>
+    --<span class="hljs-function"><span class="hljs-title">tail</span> -&gt;</span> Breed <span
+            class="hljs-keyword">for</span> tail Expected pattern  <span class="hljs-string">"norn:a"</span> <span
+            class="hljs-built_in">or</span> <span class="hljs-string">"n:z"</span>
+    --<span class="hljs-function"><span class="hljs-title">hair</span> -&gt;</span> Breed <span
+            class="hljs-keyword">for</span> hair Expected pattern  <span class="hljs-string">"norn:a"</span> <span
+            class="hljs-built_in">or</span> <span class="hljs-string">"n:z"</span>
+    --<span class="hljs-function"><span class="hljs-title">alter</span>-sleep, -s [<span
+            class="hljs-literal">false</span>] -&gt;</span> Alter the sleep pose to handle conversions between C1e <span
+            class="hljs-built_in">and</span> C2e
+    --<span class="hljs-function"><span class="hljs-title">force</span>, -f [<span class="hljs-literal">false</span>] -&gt;</span> Force overwrite of existing files 
+    --<span class="hljs-function"><span class="hljs-title">skip</span>-existing, -x [<span
+            class="hljs-literal">false</span>] -&gt;</span> Skip existing files
+    --<span class="hljs-function"><span class="hljs-title">help</span>, -h -&gt;</span> Usage info
+</code></pre>
+<h3 id="usage">Usage</h3>
+<p><strong># Change all parts to same genus/breed</strong><br>To alter a genome to use norn slot for all body parts and
+    save to a new file called <code>norn.new.gen</code>, use:</p>
+<pre><code class="lang-console">breed-util alter-genome --genus norn --breed <span class="hljs-selector-tag">a</span> --output-genome ./norn<span
+        class="hljs-selector-class">.new</span><span class="hljs-selector-class">.gen</span>
+</code></pre>
+<p><strong># Change head only</strong>
+    To change only the head to a new </p>
+</body>
+</html>
