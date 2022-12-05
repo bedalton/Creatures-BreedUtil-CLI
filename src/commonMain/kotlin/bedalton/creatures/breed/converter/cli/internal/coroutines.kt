@@ -1,10 +1,10 @@
-package bedalton.creatures.breed.cli.internal
+package bedalton.creatures.breed.converter.cli.internal
 
 import kotlinx.coroutines.*
 import kotlin.coroutines.CoroutineContext
 
-internal expect object MainDispatcher: CoroutineDispatcher
-internal expect object BackgroundDispatcher: CoroutineDispatcher
+internal expect val MainDispatcher: CoroutineDispatcher
+internal expect val BackgroundDispatcher: CoroutineDispatcher
 
 
 private fun CoroutineScope.launchNow(start: CoroutineStart, callback: suspend () -> Unit): Job {

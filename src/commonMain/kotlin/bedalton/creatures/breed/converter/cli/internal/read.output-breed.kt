@@ -1,6 +1,6 @@
 @file:Suppress("SpellCheckingInspection")
 
-package bedalton.creatures.breed.cli.internal
+package bedalton.creatures.breed.converter.cli.internal
 
 import bedalton.creatures.breed.converter.breed.ConvertBreedTask
 import bedalton.creatures.cli.ConsoleColors

@@ -1,8 +1,8 @@
 @file:OptIn(DelicateCoroutinesApi::class)
 
-package bedalton.creatures.breed.cli
+package bedalton.creatures.breed.converter.cli
 
-import bedalton.creatures.breed.cli.internal.createOverwriteCallback
+import bedalton.creatures.breed.converter.cli.internal.createOverwriteCallback
 import bedalton.creatures.breed.converter.bodyparts.*
 import bedalton.creatures.breed.converter.breed.ConvertBreedTask
 import bedalton.creatures.breed.converter.breed.convertBreed

@@ -1,4 +1,4 @@
-import bedalton.creatures.breed.cli.runMain
+import bedalton.creatures.breed.converter.cli.runMain
 import bedalton.creatures.common.util.PathUtil
 import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.GlobalScope

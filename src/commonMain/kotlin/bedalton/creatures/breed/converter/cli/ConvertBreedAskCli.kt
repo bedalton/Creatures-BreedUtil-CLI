@@ -1,6 +1,6 @@
 @file:Suppress("SpellCheckingInspection")
 
-package bedalton.creatures.breed.cli
+package bedalton.creatures.breed.converter.cli
 
 import bedalton.creatures.breed.cli.internal.*
 import bedalton.creatures.cli.*
@@ -12,8 +12,13 @@ import bedalton.creatures.cli.ConsoleColors.WHITE_BACKGROUND
 import bedalton.creatures.common.structs.GameVariant
 import bedalton.creatures.common.structs.isC2e
 import bedalton.creatures.common.util.*
-import bedalton.creatures.breed.cli.internal.readAttDirectory
 import bedalton.creatures.breed.converter.breed.*
+import bedalton.creatures.breed.converter.cli.internal.*
+import bedalton.creatures.breed.converter.cli.internal.readAttDirectory
+import bedalton.creatures.breed.converter.cli.internal.readBreedFiles
+import bedalton.creatures.breed.converter.cli.internal.readGenerateTails
+import bedalton.creatures.breed.converter.cli.internal.readProgressAges
+import bedalton.creatures.breed.converter.cli.internal.readProgressiveArms
 import com.bedalton.app.getCurrentWorkingDirectory
 import com.bedalton.vfs.*
 import kotlinx.cli.Subcommand

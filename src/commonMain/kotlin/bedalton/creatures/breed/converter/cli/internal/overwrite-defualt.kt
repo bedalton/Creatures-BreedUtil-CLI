@@ -1,4 +1,4 @@
-package bedalton.creatures.breed.cli.internal
+package bedalton.creatures.breed.converter.cli.internal
 
 import bedalton.creatures.cli.shouldWriteFile
 import com.bedalton.vfs.ShouldOverwrite

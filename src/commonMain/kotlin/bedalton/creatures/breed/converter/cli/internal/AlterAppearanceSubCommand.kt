@@ -1,8 +1,8 @@
 @file:Suppress("unused")
 
-package bedalton.creatures.breed.cli.internal
+package bedalton.creatures.breed.converter.cli.internal
 
-import bedalton.creatures.breed.cli.genusArg
+import bedalton.creatures.breed.converter.cli.genusArg
 import bedalton.creatures.breed.converter.genome.AlterGenomeOptions
 import bedalton.creatures.breed.converter.genome.alterGenome
 import bedalton.creatures.breed.converter.internal.Breed

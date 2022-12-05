@@ -1,8 +1,8 @@
 @file:OptIn(ExperimentalCli::class)
 
-package bedalton.creatures.breed.cli.internal
+package bedalton.creatures.breed.converter.cli.internal
 
-import bedalton.creatures.breed.cli.ASK_CLI_NAME
+import bedalton.creatures.breed.converter.cli.ASK_CLI_NAME
 import bedalton.creatures.cli.*
 import bedalton.creatures.common.util.*
 import kotlinx.cli.ExperimentalCli

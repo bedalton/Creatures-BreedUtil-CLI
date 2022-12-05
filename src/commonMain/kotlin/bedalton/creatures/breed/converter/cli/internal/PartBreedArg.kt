@@ -1,4 +1,4 @@
-package bedalton.creatures.breed.cli.internal
+package bedalton.creatures.breed.converter.cli.internal
 
 import bedalton.creatures.common.util.getGenusInt
 import com.bedalton.app.exitNativeWithError

@@ -1,8 +1,8 @@
-package bedalton.creatures.breed.cli
+package bedalton.creatures.breed.converter.cli
 
-import bedalton.creatures.breed.cli.internal.AlterAppearanceSubCommand
-import bedalton.creatures.breed.cli.internal.defaultCommandName
-import bedalton.creatures.breed.cli.internal.getArgsWithAsking
+import bedalton.creatures.breed.converter.cli.internal.AlterAppearanceSubCommand
+import bedalton.creatures.breed.converter.cli.internal.defaultCommandName
+import bedalton.creatures.breed.converter.cli.internal.getArgsWithAsking
 
 import bedalton.creatures.cli.*
 import bedalton.creatures.common.util.LOG_DEBUG
