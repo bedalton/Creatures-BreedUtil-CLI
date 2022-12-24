@@ -74,7 +74,7 @@ private suspend fun readRawFiles(fs: FileSystem, task: ConvertBreedTask, baseDir
                 .mapNotNull {
                     unescapeCLIPathAndQualify(it, baseDirectory)
                 }
-                .unpackPaths(fs, setOf("spr", "s16", "c16"), BREED_SPRITE_FILE_REGEX)
+                .unpackPathsSafe(fs, setOf("spr", "s16", "c16"), BREED_SPRITE_FILE_REGEX)
                 .nullIfEmpty()
                 ?: throw MissingFilesException(rawFileStrings, emptyList())
         } catch (e: MissingFilesException) {

@@ -2,7 +2,8 @@
 
 package bedalton.creatures.breed.converter.cli
 
-import bedalton.creatures.breed.cli.internal.*
+import bedalton.creatures.breed.converter.breed.*
+import bedalton.creatures.breed.converter.cli.internal.*
 import bedalton.creatures.cli.*
 import bedalton.creatures.cli.ConsoleColors.BLACK
 import bedalton.creatures.cli.ConsoleColors.BOLD
@@ -12,13 +13,7 @@ import bedalton.creatures.cli.ConsoleColors.WHITE_BACKGROUND
 import bedalton.creatures.common.structs.GameVariant
 import bedalton.creatures.common.structs.isC2e
 import bedalton.creatures.common.util.*
-import bedalton.creatures.breed.converter.breed.*
-import bedalton.creatures.breed.converter.cli.internal.*
-import bedalton.creatures.breed.converter.cli.internal.readAttDirectory
-import bedalton.creatures.breed.converter.cli.internal.readBreedFiles
-import bedalton.creatures.breed.converter.cli.internal.readGenerateTails
-import bedalton.creatures.breed.converter.cli.internal.readProgressAges
-import bedalton.creatures.breed.converter.cli.internal.readProgressiveArms
+import com.bedalton.app.exitNativeWithError
 import com.bedalton.app.getCurrentWorkingDirectory
 import com.bedalton.vfs.*
 import kotlinx.cli.Subcommand
@@ -46,6 +41,13 @@ class ConvertBreedAskCli(private val coroutineContext: CoroutineContext, private
         description = "Skip existing files"
     ).default(false)
 
+    private val noAsync by option(
+        Flag,
+        "no-async",
+        shortName = null,
+        description = "Do not convert sprites asynchronously"
+
+    )
 
 
     override fun execute() {
@@ -69,6 +71,10 @@ class ConvertBreedAskCli(private val coroutineContext: CoroutineContext, private
     private suspend fun run(): Int {
         val task = ConvertBreedTask()
         val baseDirectory = getCurrentWorkingDirectory()
+            ?: exitNativeWithError(
+                ERROR_CODE__BAD_INPUT_FILE,
+                "Failed to obtain current working directory"
+            )
         val fs = task.getVfs()
 
         task.withOverwriteExisting(overwriteExisting)
@@ -117,7 +123,7 @@ class ConvertBreedAskCli(private val coroutineContext: CoroutineContext, private
 
         // Should make all sprites the same size
         if (toGame.isC2e) {
-            val sameSize = !yes("${BOLD}Would you like to make all images within a breed file the same size$RESET")
+            val sameSize = yes("${BOLD}Would you like to make all images within a breed file the same size$RESET")
             task.withSameSize(sameSize)
         }
 
@@ -160,9 +166,12 @@ class ConvertBreedAskCli(private val coroutineContext: CoroutineContext, private
             }
         }
 
+        if (noAsync == true) {
+            task.withAsync(false)
+        }
 
         // Run and get result code
-        val code = task.runSuspending()
+        val code = convertBreed(task)
         if (code != 0) {
             Log.e { "$WHITE_BACKGROUND$RED${BOLD}Conversion failed with exit code: ${code}$RESET" }
         }

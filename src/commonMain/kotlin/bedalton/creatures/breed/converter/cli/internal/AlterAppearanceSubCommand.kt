@@ -129,6 +129,10 @@ internal class AlterAppearanceSubCommand(private val coroutineContext: Coroutine
 
     private suspend fun executeSuspending(): Int {
         val currentWorkingDirectory = getCurrentWorkingDirectory()
+            ?: exitNativeWithError(
+                ERROR_CODE__BAD_INPUT_FILE,
+                "Failed to obtain current working directory"
+            )
         val genus = defaultPartGenus
         val breedString = breed
         if (breedString != null && breedString.length != 1) {

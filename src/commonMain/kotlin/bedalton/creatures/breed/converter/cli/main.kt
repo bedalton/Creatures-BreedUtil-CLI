@@ -5,10 +5,7 @@ import bedalton.creatures.breed.converter.cli.internal.defaultCommandName
 import bedalton.creatures.breed.converter.cli.internal.getArgsWithAsking
 
 import bedalton.creatures.cli.*
-import bedalton.creatures.common.util.LOG_DEBUG
-import bedalton.creatures.common.util.Log
-import bedalton.creatures.common.util.iIf
-import bedalton.creatures.common.util.like
+import bedalton.creatures.common.util.*
 import com.bedalton.app.exitNative
 import com.bedalton.app.exitNativeOk
 import com.bedalton.app.mapAsync
@@ -83,5 +80,7 @@ suspend fun runMain(args: Array<String>, commandName: String = defaultCommandNam
         1
     }
     Log.i { "Done.." }
+    Log.i { "* Press enter to exit *" }
+    readln()
     CompletableDeferred(code)
 }.await()

@@ -7,10 +7,7 @@ import bedalton.creatures.cli.ConsoleColors.BOLD
 import bedalton.creatures.cli.unescapeCLIPathAndQualify
 import bedalton.creatures.common.util.*
 import com.bedalton.app.exitNativeWithError
-import com.bedalton.vfs.ERROR_CODE__FAILED
-import com.bedalton.vfs.FileSystem
-import com.bedalton.vfs.MissingFilesException
-import com.bedalton.vfs.unpackPaths
+import com.bedalton.vfs.*
 
 
 val askATTPrompt = "${BOLD}Enter source ATT directory${ConsoleColors.RESET}: (type or drag folder into window, then press enter)\n\t- "
@@ -47,10 +44,10 @@ internal suspend fun readAttDirectory(fs: FileSystem, task: ConvertBreedTask, ba
         val regex = getBreedSpriteFileRegex(genus, task.getInputBreed()!![0], setOf("att"))
         val atts = try {
             listOf(temp)
-                .unpackPaths(fs, setOf("att"), regex, root = basePath)
+                .unpackPathsSafe(fs, setOf("att"), regex, root = basePath)
                 .nullIfEmpty() ?: temp2?.let {
                 listOf(temp2)
-                    .unpackPaths(fs, setOf("att"), regex)
+                    .unpackPathsSafe(fs, setOf("att"), regex)
                     .nullIfEmpty()
             }
         } catch (e: MissingFilesException) {

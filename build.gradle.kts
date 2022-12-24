@@ -114,14 +114,19 @@ kotlin {
     }
     macosX64() {
         binaries.executable {
-            this.entryPoint = "bedalton.creatures.breed.cli.main"
+            this.entryPoint = "bedalton.creatures.breed.converter.cli.main"
         }
     }
     linuxX64() {
-        binaries.executable()
+        binaries.executable {
+            this.entryPoint = "bedalton.creatures.breed.converter.cli.main"
+        }
     }
     mingwX64() {
-        binaries.executable()
+
+        binaries.executable {
+            this.entryPoint = "bedalton.creatures.breed.converter.cli.main"
+        }
     }
     sourceSets {
 

@@ -12,6 +12,7 @@ import bedalton.creatures.common.structs.*
 import bedalton.creatures.common.util.*
 import bedalton.creatures.sprite.util.*
 import com.bedalton.app.AppRequestTermination
+import com.bedalton.app.exitNativeWithError
 import com.bedalton.app.getCurrentWorkingDirectory
 import com.bedalton.vfs.*
 import kotlinx.cli.*
@@ -62,14 +63,14 @@ class ConvertBreedSubcommand(
         "genus",
         shortName = "g",
         description = "The output genus: [n]orn, [g]rendel, [e]ttin, [s]hee, geat"
-    )
+    ).required()
 
     private val outputBreed by option(
         ArgType.String,
         "breed",
         shortName = "b",
         description = "The output breed slot for these body parts"
-    )
+    ).required()
 
 
     private val inputGenus by option(
@@ -97,7 +98,6 @@ class ConvertBreedSubcommand(
         "progressive",
         description = "Use non-linear mapping of C1e to C2e parts to fake front facing tilt",
     ).default(false)
-
 
     private val noAgeProgression by option(
         Flag,
@@ -179,6 +179,12 @@ class ConvertBreedSubcommand(
         description = "The actual genus for creatures hatched from this genome (unrelated to appearance)"
     )
 
+    private val noAsync by option(
+        Flag,
+        "no-async",
+        "Process files synchronously"
+    )
+
     private val files: List<String> by argument(
         type = ArgType.String,
         fullName = "images",
@@ -189,6 +195,10 @@ class ConvertBreedSubcommand(
     override fun execute() {
         val job = GlobalScope.async(coroutineContext) {
             val currentWorkingDirectory = getCurrentWorkingDirectory()
+                ?: exitNativeWithError(
+                    ERROR_CODE__BAD_INPUT_FILE,
+                    "Failed to obtain current working directory"
+                )
             val task = ConvertBreedTask(
                 toGame.code,
                 files.mapNotNull {
@@ -230,6 +240,7 @@ class ConvertBreedSubcommand(
                         default = true
                     )
                 )
+                .withAsync(noAsync != true)
 
             try {
                 convertBreed(task)

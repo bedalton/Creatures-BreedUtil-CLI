@@ -8,10 +8,7 @@ import bedalton.creatures.cli.unescapeCLIPathAndQualify
 import bedalton.creatures.common.structs.GameVariant
 import bedalton.creatures.common.util.Log
 import bedalton.creatures.common.util.nullIfEmpty
-import com.bedalton.vfs.FileSystem
-import com.bedalton.vfs.MissingFilesException
-import com.bedalton.vfs.unescapePath
-import com.bedalton.vfs.unpackPaths
+import com.bedalton.vfs.*
 
 
 internal suspend fun readConvertGenome(fs: FileSystem, task: ConvertBreedTask, baseDirectory: String) {
@@ -78,7 +75,7 @@ private suspend fun readGenome(
         }
         val genomeFile = if (input) {
             try {
-                listOf(temp).unpackPaths(
+                listOf(temp).unpackPathsSafe(
                     fs,
                     setOf("gen"),
                     root = baseDirectory
