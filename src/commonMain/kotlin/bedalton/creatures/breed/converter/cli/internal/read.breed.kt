@@ -7,14 +7,20 @@ import bedalton.creatures.breed.converter.breed.BreedRegexUtil.getBreedSpriteFil
 import bedalton.creatures.breed.converter.breed.ConvertBreedTask
 import bedalton.creatures.breed.converter.breed.withFiles
 import bedalton.creatures.cli.*
-import bedalton.creatures.cli.ConsoleColors.BOLD
-import bedalton.creatures.cli.ConsoleColors.RED
-import bedalton.creatures.cli.ConsoleColors.RESET
-import bedalton.creatures.cli.ConsoleColors.WHITE_BACKGROUND
-import bedalton.creatures.cli.ConsoleColors.YELLOW
-import bedalton.creatures.common.structs.GameVariant
+import bedalton.creatures.common.structs.*
 import bedalton.creatures.common.util.*
 import com.bedalton.app.exitNativeWithError
+import com.bedalton.cli.unescapeCLIPathAndQualify
+import com.bedalton.common.util.FileNameUtil
+import com.bedalton.common.util.PathUtil
+import com.bedalton.common.util.nullIfEmpty
+import com.bedalton.common.util.stripSurroundingQuotes
+import com.bedalton.log.*
+import com.bedalton.log.ConsoleColors.BOLD
+import com.bedalton.log.ConsoleColors.RED
+import com.bedalton.log.ConsoleColors.RESET
+import com.bedalton.log.ConsoleColors.WHITE_BACKGROUND
+import com.bedalton.log.ConsoleColors.YELLOW
 import com.bedalton.vfs.*
 
 

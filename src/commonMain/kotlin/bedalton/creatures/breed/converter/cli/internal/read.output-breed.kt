@@ -3,11 +3,10 @@
 package bedalton.creatures.breed.converter.cli.internal
 
 import bedalton.creatures.breed.converter.breed.ConvertBreedTask
-import bedalton.creatures.cli.ConsoleColors
 import bedalton.creatures.common.structs.GameVariant
-import bedalton.creatures.common.util.Log
-import bedalton.creatures.common.util.nullIfEmpty
-import bedalton.creatures.common.util.stripSurroundingQuotes
+import com.bedalton.common.util.nullIfEmpty
+import com.bedalton.common.util.stripSurroundingQuotes
+import com.bedalton.log.*
 
 
 internal suspend fun readOutputBreedGenus(task: ConvertBreedTask) {

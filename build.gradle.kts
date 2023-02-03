@@ -1,6 +1,7 @@
 @file:Suppress("UNUSED_VARIABLE")
 
 plugins {
+    id("com.bedalton.multiplatform") version "1.0.0"
     kotlin("multiplatform")
     application
 }
@@ -36,6 +37,14 @@ val creaturesSpriteUtilVersion: String by project
 // Bedalton
 val bedaltonLocalFilesVersion: String by project
 val bedaltonAppSupportVersion: String by project
+val bedaltonByteUtilVersion: String by project
+val bedaltonCommonLogVersion: String by project
+val bedaltonCommonCoreVersion: String by project
+val bedaltonCommonCoroutinesVersion: String by project
+
+bedaltonConfig {
+    additionalLibraries += listOf("breed-util")
+}
 
 kotlin {
     jvm {
@@ -49,7 +58,7 @@ kotlin {
     js(IR) {
         useCommonJs()
         binaries.executable()
-        moduleName = "breed-util"
+        moduleName = "breed-util-cli"
         nodejs {
             useCommonJs()
             binaries.library()
@@ -134,14 +143,22 @@ kotlin {
             dependencies {
 
                 implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:$kotlinxCoroutinesVersion")
-                implementation("org.jetbrains.kotlinx:kotlinx-cli:$kotlinxCliVersion")
-                implementation("bedalton.creatures:CommonCLI:$creaturesCommonCLIVersion")
-                implementation("bedalton.creatures:CommonCore:$creaturesCommonCoreVersion")
-                implementation("bedalton.creatures:BreedUtil:$creaturesBreedUtilVersion")
-                implementation("bedalton.creatures:GenomeUtil:$creaturesGenomeUtilVersion")
-                implementation("bedalton.creatures:SpriteUtil:$creaturesSpriteUtilVersion")
-                implementation("com.bedalton:LocalFiles:$bedaltonLocalFilesVersion")
-                implementation("com.bedalton:AppSupport:$bedaltonAppSupportVersion")
+                implementation("org.jetbrains.kotlinx:kotlinx-cli:$kotlinxCliVersion") {
+                    exclude("com.bedalton", "kotlinx-nodejs")
+                }
+                implementation("bedalton.creatures:creatures-common-cli:$creaturesCommonCLIVersion") {
+                    exclude("com.bedalton", "kotlinx-nodejs")
+                }
+                implementation("bedalton.creatures:creatures-common:$creaturesCommonCoreVersion")
+                implementation("bedalton.creatures:breed-util:$creaturesBreedUtilVersion")
+                implementation("bedalton.creatures:common-genome:$creaturesGenomeUtilVersion")
+                implementation("bedalton.creatures:common-sprite:$creaturesSpriteUtilVersion")
+                implementation("com.bedalton:local-files:$bedaltonLocalFilesVersion")
+                implementation("com.bedalton:app-support:$bedaltonAppSupportVersion")
+                implementation("com.bedalton:common-log:$bedaltonCommonLogVersion")
+                implementation("com.bedalton:common-core:$bedaltonCommonCoreVersion")
+                implementation("com.bedalton:common-byte:$bedaltonByteUtilVersion")
+                implementation("com.bedalton:common-coroutines:$bedaltonCommonCoroutinesVersion")
             }
         }
 
@@ -177,6 +194,7 @@ kotlin {
             languageSettings.optIn("kotlinx.coroutines.ExperimentalCoroutinesApi")
             configurations.all {
                 resolutionStrategy {
+
                     eachDependency {
                         if (requested.group == "org.jetbrains.kotlin" && requested.name.startsWith("kotlin-"))
                             useVersion(kotlinVersion)
@@ -190,65 +208,3 @@ kotlin {
 application {
     mainClass.set("bedalton.creatures.breed.convert.cli.MainKt")
 }
-
-configurations.matching { it.name != "kotlinCompilerPluginClasspath" }.all {
-    val suffix = when {
-        this.name.startsWith("js") -> "node"
-        else -> null
-    }
-
-    if (suffix != null) {
-        resolutionStrategy.eachDependency {
-            if (!requested.group.contains("bedalton")) {
-                return@eachDependency
-            }
-            if (
-                requested.name.startsWith("CommonCLI") ||
-                requested.name.startsWith("LocalFiles") ||
-                requested.name.startsWith("BreedUtil") ||
-                requested.name.startsWith("AppSupport")
-            ) {
-                if (!requested.name.endsWith("-$suffix")) {
-                    println("Adding suffix to: ${requested.name}")
-                    useTarget("${requested.group}:${requested.name}-$suffix:${requested.version}")
-                }
-            }
-        }
-    }
-}
-
-
-
-
-
-val copyResourcesTask: (target: String, kind: String) -> Copy = { target: String, kind: String ->
-    val create = tasks.create<Copy>("copy${target.capitalize()}${kind.capitalize()}Resources") {
-        from("src/${target}${kind.capitalize()}/resources", "src/common${kind.capitalize()}/resources")
-        into("build/processedResources/${target}/main")
-    }
-    create
-}
-
-// JS Resources
-val copyResourceJS = copyResourcesTask("js", "main")
-val copyTestResourcesJS = copyResourcesTask("js", "test")
-tasks.getByName("compileKotlinJs")
-    .dependsOn(copyResourceJS)
-tasks.getByName("jsTest")
-    .dependsOn(copyTestResourcesJS)
-
-// MacOS Resources
-val copyResourcesMacOs = copyResourcesTask("macosX64", "main")
-val copyTestResourcesMacosX64 = copyResourcesTask("macosX64", "test")
-tasks.findByName("compileKotlinMacosX64")!!
-    .dependsOn(copyResourcesMacOs)
-tasks.findByName("macosX64Test")!!
-    .dependsOn(copyTestResourcesMacosX64)
-
-// Mingw Resources
-val copyResourcesMingw = copyResourcesTask("mingwX64", "main")
-val copyTestResourcesMingW = copyResourcesTask("mingwX64", "test")
-tasks.findByName("compileKotlinMingwX64")!!
-    .dependsOn(copyResourcesMingw)
-tasks.findByName("mingwX64Test")!!
-    .dependsOn(copyTestResourcesMingW)

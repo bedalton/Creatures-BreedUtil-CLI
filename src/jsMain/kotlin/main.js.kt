@@ -1,11 +1,10 @@
 import bedalton.creatures.breed.converter.cli.runMain
-import bedalton.creatures.common.util.PathUtil
+import com.bedalton.common.util.PathUtil
 import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.asPromise
 import kotlinx.coroutines.async
 import kotlin.js.Promise
-import process
 
 @OptIn(DelicateCoroutinesApi::class)
 @JsExport

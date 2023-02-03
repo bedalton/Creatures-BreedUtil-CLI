@@ -5,16 +5,19 @@ package bedalton.creatures.breed.converter.cli
 import bedalton.creatures.breed.converter.breed.*
 import bedalton.creatures.breed.converter.cli.internal.*
 import bedalton.creatures.cli.*
-import bedalton.creatures.cli.ConsoleColors.BLACK
-import bedalton.creatures.cli.ConsoleColors.BOLD
-import bedalton.creatures.cli.ConsoleColors.RED
-import bedalton.creatures.cli.ConsoleColors.RESET
-import bedalton.creatures.cli.ConsoleColors.WHITE_BACKGROUND
-import bedalton.creatures.common.structs.GameVariant
+import com.bedalton.cli.Flag
 import bedalton.creatures.common.structs.isC2e
 import bedalton.creatures.common.util.*
 import com.bedalton.app.exitNativeWithError
 import com.bedalton.app.getCurrentWorkingDirectory
+import com.bedalton.cli.readInt
+import com.bedalton.common.util.className
+import com.bedalton.log.*
+import com.bedalton.log.ConsoleColors.BLACK
+import com.bedalton.log.ConsoleColors.BOLD
+import com.bedalton.log.ConsoleColors.RED
+import com.bedalton.log.ConsoleColors.RESET
+import com.bedalton.log.ConsoleColors.WHITE_BACKGROUND
 import com.bedalton.vfs.*
 import kotlinx.cli.Subcommand
 import kotlinx.cli.default
@@ -95,7 +98,7 @@ class ConvertBreedAskCli(private val coroutineContext: CoroutineContext, private
         val toGame = readGame(task)
 
         // Get breed sprite files
-        val breedFiles = readBreedFiles(task.getFromGame() ?: GameVariant.C3, fs, task, baseDirectory)
+        val breedFiles = readBreedFiles(task.getFromGame() ?: bedalton.creatures.common.structs.GameVariant.C3, fs, task, baseDirectory)
         
 
         // Determine from game
@@ -125,6 +128,11 @@ class ConvertBreedAskCli(private val coroutineContext: CoroutineContext, private
         if (toGame.isC2e) {
             val sameSize = yes("${BOLD}Would you like to make all images within a breed file the same size$RESET")
             task.withSameSize(sameSize)
+            if (sameSize) {
+                val padding = readInt("${BOLD}Padding to add around same-size images$RESET; [Default = ${BOLD}0$RESET]", true, null)
+                    ?: 0
+                task.withSameSizePadding(padding)
+            }
         }
 
         // Show progress

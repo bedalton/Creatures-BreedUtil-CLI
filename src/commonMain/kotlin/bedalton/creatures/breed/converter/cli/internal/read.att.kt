@@ -1,13 +1,20 @@
 package bedalton.creatures.breed.converter.cli.internal
 
-import bedalton.creatures.breed.converter.breed.ConvertBreedTask
 import bedalton.creatures.breed.converter.breed.BreedRegexUtil.getBreedSpriteFileRegex
-import bedalton.creatures.cli.ConsoleColors
-import bedalton.creatures.cli.ConsoleColors.BOLD
-import bedalton.creatures.cli.unescapeCLIPathAndQualify
-import bedalton.creatures.common.util.*
+import bedalton.creatures.breed.converter.breed.ConvertBreedTask
+import bedalton.creatures.common.util.getGenusInt
 import com.bedalton.app.exitNativeWithError
-import com.bedalton.vfs.*
+import com.bedalton.cli.unescapeCLIPathAndQualify
+import com.bedalton.common.util.ensureEndsWith
+import com.bedalton.common.util.nullIfEmpty
+import com.bedalton.common.util.pathSeparatorChar
+import com.bedalton.log.ConsoleColors
+import com.bedalton.log.ConsoleColors.BOLD
+import com.bedalton.log.Log
+import com.bedalton.vfs.ERROR_CODE__FAILED
+import com.bedalton.vfs.FileSystem
+import com.bedalton.vfs.MissingFilesException
+import com.bedalton.vfs.unpackPathsSafe
 
 
 val askATTPrompt = "${BOLD}Enter source ATT directory${ConsoleColors.RESET}: (type or drag folder into window, then press enter)\n\t- "

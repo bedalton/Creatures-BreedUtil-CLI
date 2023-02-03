@@ -2,6 +2,7 @@
 
 package bedalton.creatures.breed.converter.cli.internal
 
+import com.bedalton.log.*
 import bedalton.creatures.breed.converter.cli.ASK_CLI_NAME
 import bedalton.creatures.cli.*
 import bedalton.creatures.common.util.*
@@ -12,6 +13,10 @@ import kotlin.math.min
 
 internal const val defaultCommandName = "BreedUtil"
 
+/**
+ * Checks the args list to see whether a sub-command has called
+ * Appends the AKS sub-command if none was present
+ */
 internal fun getArgsWithAsking(
     commandName: String,
     args: Array<String>,

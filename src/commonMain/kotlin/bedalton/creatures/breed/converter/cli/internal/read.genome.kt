@@ -3,12 +3,14 @@ package bedalton.creatures.breed.converter.cli.internal
 import bedalton.creatures.breed.converter.breed.ConvertBreedTask
 import bedalton.creatures.breed.converter.breed.getToGame
 import bedalton.creatures.breed.converter.genome.getDefaultGenomeFile
-import bedalton.creatures.cli.ConsoleColors
-import bedalton.creatures.cli.unescapeCLIPathAndQualify
 import bedalton.creatures.common.structs.GameVariant
-import bedalton.creatures.common.util.Log
-import bedalton.creatures.common.util.nullIfEmpty
-import com.bedalton.vfs.*
+import com.bedalton.common.util.nullIfEmpty
+import com.bedalton.log.ConsoleColors
+import com.bedalton.log.Log
+import com.bedalton.vfs.FileSystem
+import com.bedalton.vfs.MissingFilesException
+import com.bedalton.vfs.unescapePath
+import com.bedalton.vfs.unpackPathsSafe
 
 
 internal suspend fun readConvertGenome(fs: FileSystem, task: ConvertBreedTask, baseDirectory: String) {

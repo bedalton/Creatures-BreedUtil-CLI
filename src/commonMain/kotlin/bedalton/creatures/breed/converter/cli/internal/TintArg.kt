@@ -1,7 +1,7 @@
 package bedalton.creatures.breed.converter.cli.internal
 
-//import bedalton.creatures.cli.ConsoleColors.BOLD
-//import bedalton.creatures.cli.ConsoleColors.RESET
+//import com.bedalton.log.ConsoleColors.BOLD
+//import com.bedalton.log.ConsoleColors.RESET
 //import bedalton.creatures.common.structs.GameVariant
 //import bedalton.creatures.common.util.IOException
 //import bedalton.creatures.genetics.gene.GeneFlags

@@ -2,13 +2,15 @@
 
 package bedalton.creatures.breed.converter.cli.internal
 
-import bedalton.creatures.cli.ConsoleColors.BOLD
-import bedalton.creatures.cli.ConsoleColors.RESET
-import bedalton.creatures.common.util.IOException
-import bedalton.creatures.common.util.nullIfEmpty
+import com.bedalton.log.ConsoleColors.BOLD
+import com.bedalton.log.ConsoleColors.RESET
+import com.bedalton.io.bytes.*
+import com.bedalton.log.*
 import bedalton.creatures.genetics.gene.Gene
 import bedalton.creatures.genetics.gene.GeneFlags
 import bedalton.creatures.genetics.gene.GeneHeader
+import com.bedalton.common.exceptions.IOException
+import com.bedalton.common.util.nullIfEmpty
 import kotlinx.cli.ArgType
 
 

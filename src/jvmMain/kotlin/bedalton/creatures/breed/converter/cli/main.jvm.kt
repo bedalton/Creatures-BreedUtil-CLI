@@ -1,14 +1,12 @@
 package bedalton.creatures.breed.converter.cli
 
-import bedalton.creatures.breed.converter.cli.internal.BackgroundDispatcher
-import bedalton.creatures.breed.converter.cli.runMain
-import bedalton.creatures.common.util.Log
+import com.bedalton.common.coroutines.BackgroundDispatcher
+import com.bedalton.log.Log
 import kotlinx.coroutines.runBlocking
 
 
 fun main(args: Array<String>) {
     runBlocking(BackgroundDispatcher) {
-        Log.i { "main(args)" }
         runMain(args)
     }
 }

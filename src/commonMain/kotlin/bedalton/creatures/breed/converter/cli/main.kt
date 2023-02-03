@@ -3,13 +3,15 @@ package bedalton.creatures.breed.converter.cli
 import bedalton.creatures.breed.converter.cli.internal.AlterAppearanceSubCommand
 import bedalton.creatures.breed.converter.cli.internal.defaultCommandName
 import bedalton.creatures.breed.converter.cli.internal.getArgsWithAsking
-
-import bedalton.creatures.cli.*
-import bedalton.creatures.common.util.*
+import com.bedalton.common.util.like
 import com.bedalton.app.exitNative
 import com.bedalton.app.exitNativeOk
-import com.bedalton.app.mapAsync
+import com.bedalton.common.coroutines.mapAsync
 import com.bedalton.app.setIsCLI
+import com.bedalton.log.LOG_DEBUG
+import com.bedalton.log.Log
+import com.bedalton.log.enableCLIColors
+import com.bedalton.log.iIf
 import kotlinx.cli.ArgParser
 import kotlinx.coroutines.CompletableDeferred
 import kotlinx.coroutines.Deferred

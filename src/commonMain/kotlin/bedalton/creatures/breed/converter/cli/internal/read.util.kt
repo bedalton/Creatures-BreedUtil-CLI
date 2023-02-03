@@ -1,15 +1,15 @@
 package bedalton.creatures.breed.converter.cli.internal
 
-import bedalton.creatures.cli.ConsoleColors
-import bedalton.creatures.cli.promptYesNo
-import bedalton.creatures.cli.readLine
-import bedalton.creatures.common.util.Log
-import bedalton.creatures.common.util.nullIfEmpty
-import bedalton.creatures.common.util.stripSurroundingQuotes
+import com.bedalton.common.util.nullIfEmpty
+import com.bedalton.common.util.stripSurroundingQuotes
 import com.bedalton.app.exitNativeOk
+import com.bedalton.cli.readLine
+import com.bedalton.log.ConsoleColors
+import com.bedalton.log.Log
 
 
 internal val wishToExit = "\t${ConsoleColors.BOLD}Wish to exit?${ConsoleColors.RESET} Type ${ConsoleColors.BOLD}\"exit\"${ConsoleColors.RESET} to cancel conversion"
+
 
 internal suspend fun readLineCancellable(prompt: String): String? {
     val needsTail = !prompt.endsWith(':') &&

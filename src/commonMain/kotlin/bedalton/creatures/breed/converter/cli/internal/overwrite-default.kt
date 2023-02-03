@@ -1,6 +1,6 @@
 package bedalton.creatures.breed.converter.cli.internal
 
-import bedalton.creatures.cli.shouldWriteFile
+import com.bedalton.cli.shouldWriteFile
 import com.bedalton.vfs.ShouldOverwrite
 import com.bedalton.vfs.ShouldOverwriteCallbackAsync
 

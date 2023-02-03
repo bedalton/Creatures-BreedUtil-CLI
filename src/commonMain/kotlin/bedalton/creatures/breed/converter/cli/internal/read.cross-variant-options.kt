@@ -1,13 +1,13 @@
 package bedalton.creatures.breed.converter.cli.internal
 
 import bedalton.creatures.breed.converter.breed.ConvertBreedTask
-import bedalton.creatures.cli.ConsoleColors
+import com.bedalton.log.ConsoleColors
 import bedalton.creatures.common.structs.GameVariant
 import bedalton.creatures.common.structs.isC1e
 import bedalton.creatures.common.structs.isC2e
-import bedalton.creatures.common.util.FileNameUtil
-import bedalton.creatures.common.util.Log
+import com.bedalton.log.*
 import bedalton.creatures.breed.converter.breed.getFromGame
+import com.bedalton.common.util.FileNameUtil
 
 internal suspend fun readProgressiveArms(task: ConvertBreedTask, toGame: GameVariant, fromGame: GameVariant?): ConvertBreedTask {
 
