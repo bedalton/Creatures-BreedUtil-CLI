@@ -8,12 +8,14 @@ import bedalton.creatures.breed.converter.breed.ConvertBreedTask
 import bedalton.creatures.breed.converter.breed.convertBreed
 import bedalton.creatures.breed.converter.breed.withShouldOverwriteCallback
 import bedalton.creatures.cli.*
-import bedalton.creatures.common.structs.*
 import bedalton.creatures.common.util.*
+import com.bedalton.cli.Flag
 import bedalton.creatures.sprite.util.*
 import com.bedalton.app.AppRequestTermination
 import com.bedalton.app.exitNativeWithError
 import com.bedalton.app.getCurrentWorkingDirectory
+import com.bedalton.cli.unescapeCLIPath
+import com.bedalton.common.util.PathUtil
 import com.bedalton.vfs.*
 import kotlinx.cli.*
 import kotlinx.coroutines.*
@@ -191,6 +193,12 @@ class ConvertBreedSubcommand(
         description = "Image files or folders"
     ).vararg()
 
+    private val sameSizePadding by option(
+        type = ArgType.Int,
+        fullName = "same-size-padding",
+        description = "The amount of padding to add around parts in a same-size image"
+    ).default(0)
+
 
     override fun execute() {
         val job = GlobalScope.async(coroutineContext) {
@@ -226,6 +234,7 @@ class ConvertBreedSubcommand(
                 .withOverwriteNone(overwriteNone)
                 .withNoTails(noTails)
                 .withSameSize(sameSize)
+                .withSameSizePadding(sameSizePadding)
                 .withInputGenome(inputGenome?.let {
                     PathUtil.ensureAbsolutePath(unescapeCLIPath(it), currentWorkingDirectory)
                 })
