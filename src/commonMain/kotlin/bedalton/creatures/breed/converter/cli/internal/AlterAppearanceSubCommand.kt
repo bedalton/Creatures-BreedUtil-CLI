@@ -14,6 +14,7 @@ import com.bedalton.cli.unescapeCLIPathAndQualify
 import com.bedalton.common.util.FileNameUtil
 import com.bedalton.common.util.nullIfEmpty
 import com.bedalton.vfs.*
+import com.soywiz.kmem.clamp
 import kotlinx.cli.ArgType
 import kotlinx.cli.ExperimentalCli
 import kotlinx.cli.Subcommand
@@ -99,6 +100,37 @@ internal class AlterAppearanceSubCommand(private val coroutineContext: Coroutine
         "Breed for hair"
     )
 
+
+    private val red by option(
+        ArgType.Int,
+        "red",
+        description = "Red tint to apply"
+    )
+
+    private val green by option(
+        ArgType.Int,
+        "green",
+        description = "Green tint to apply"
+    )
+
+    private val blue by option(
+        ArgType.Int,
+        "blue",
+        description = "Blue tint to apply"
+    )
+
+    private val swap by option(
+        ArgType.Int,
+        "swap",
+        description  = "Color swap between red and blue"
+    )
+
+    private val rotation by option(
+        ArgType.Int,
+        "rotation",
+        description = "Color rotation or shifting of red, green and blue channels"
+    )
+
     private val alterSleepPose: Boolean by option(
         type = Flag,
         fullName = "alter-sleep",
@@ -178,6 +210,11 @@ internal class AlterAppearanceSubCommand(private val coroutineContext: Coroutine
                 tail = tail,
                 hair = hair,
             ),
+            red = red,
+            green = green,
+            blue = blue,
+            swap = swap?.clamp(0, 255),
+            rotation = rotation,
             overwriteDefault = overwriteDefault,
             shouldWriteCallback = createOverwriteCallback(
                 overwriteExisting,
