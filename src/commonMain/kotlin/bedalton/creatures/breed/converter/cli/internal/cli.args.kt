@@ -26,6 +26,9 @@ internal fun getArgsWithAsking(
     if (args.isEmpty()) {
         return arrayOf(ASK_CLI_NAME)
     }
+    if ("-h" in args || "--help" in args) {
+        return args
+    }
     Log.iIf(LOG_DEBUG) { "Get args with asking" }
     val subcommandNames = subcommands.map { it.name.lowercase() }
     var walk = true
