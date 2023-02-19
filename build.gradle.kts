@@ -30,7 +30,7 @@ val kotlinxCliVersion: String by project
 // Creatures
 val creaturesCommonCLIVersion: String by project
 val creaturesCommonCoreVersion: String by project
-val creaturesGenomeUtilVersion: String by project
+val creaturesCommonGenomeVersion: String by project
 val creaturesBreedUtilVersion: String by project
 val creaturesSpriteUtilVersion: String by project
 
@@ -151,7 +151,7 @@ kotlin {
                 }
                 implementation("bedalton.creatures:creatures-common:$creaturesCommonCoreVersion")
                 implementation("bedalton.creatures:breed-util:$creaturesBreedUtilVersion")
-                implementation("bedalton.creatures:common-genome:$creaturesGenomeUtilVersion")
+                implementation("bedalton.creatures:common-genome:$creaturesCommonGenomeVersion")
                 implementation("bedalton.creatures:common-sprite:$creaturesSpriteUtilVersion")
                 implementation("com.bedalton:local-files:$bedaltonLocalFilesVersion")
                 implementation("com.bedalton:app-support:$bedaltonAppSupportVersion")
