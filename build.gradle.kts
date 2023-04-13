@@ -3,6 +3,7 @@
 plugins {
     id("com.bedalton.multiplatform") version "1.0.0"
     kotlin("multiplatform")
+    kotlin("plugin.serialization")
     application
 }
 
@@ -26,6 +27,7 @@ repositories {
 val kotlinVersion: String by project
 val kotlinxCoroutinesVersion: String by project
 val kotlinxCliVersion: String by project
+val kotlinxSerializationVersion: String by project
 
 // Creatures
 val creaturesCommonCLIVersion: String by project
@@ -149,6 +151,8 @@ kotlin {
                 implementation("bedalton.creatures:creatures-common-cli:$creaturesCommonCLIVersion") {
                     exclude("com.bedalton", "kotlinx-nodejs")
                 }
+                implementation("org.jetbrains.kotlinx:kotlinx-serialization-core:$kotlinxSerializationVersion")
+                implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:$kotlinxSerializationVersion")
                 implementation("bedalton.creatures:creatures-common:$creaturesCommonCoreVersion")
                 implementation("bedalton.creatures:breed-util:$creaturesBreedUtilVersion")
                 implementation("bedalton.creatures:common-genome:$creaturesCommonGenomeVersion")

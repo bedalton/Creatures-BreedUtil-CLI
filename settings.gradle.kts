@@ -9,6 +9,7 @@ pluginManagement {
         gradlePluginPortal()
     }
     plugins {
+        kotlin("plugin.serialization") version kotlinVersion
         kotlin("multiplatform") version kotlinVersion
     }
 }

@@ -11,7 +11,6 @@ import bedalton.creatures.common.structs.*
 import bedalton.creatures.common.util.*
 import com.bedalton.app.exitNativeWithError
 import com.bedalton.cli.unescapeCLIPathAndQualify
-import com.bedalton.common.util.FileNameUtil
 import com.bedalton.common.util.PathUtil
 import com.bedalton.common.util.nullIfEmpty
 import com.bedalton.common.util.stripSurroundingQuotes
@@ -61,7 +60,7 @@ internal suspend fun readBreedFiles(fromVariant: GameVariant, fs: FileSystem, ta
 
     // Filter available sprites by genus and breed char
     return spriteFiles
-        .filter { regex.matches(FileNameUtil.getFileNameWithoutExtension(it.trim()) ?: "") }
+        .filter { regex.matches(PathUtil.getFileNameWithoutExtension(it.trim()) ?: "") }
 }
 
 /**
@@ -224,7 +223,7 @@ private fun intToGenusString(genus: Int, geat: String = "Geat"): String? {
  */
 private fun fileBreedOptions(spriteFiles: List<String>): List<Triple<String, Pair<Int, Int>, Char>> {
     val fileNameWithoutExtension = spriteFiles
-        .mapNotNull(FileNameUtil::getFileNameWithoutExtension)
+        .mapNotNull(PathUtil::getFileNameWithoutExtension)
         .toSet()
     return fileNameWithoutExtension.mapNotNull map@{
         var genus = it[1].digitToIntOrNull()

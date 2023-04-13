@@ -10,7 +10,7 @@ import com.bedalton.log.ConsoleColors.RESET
 import com.bedalton.log.ConsoleColors.WHITE_BACKGROUND
 import com.bedalton.log.*
 import bedalton.creatures.breed.converter.breed.withToGame
-import com.bedalton.common.util.FileNameUtil
+import com.bedalton.common.util.PathUtil
 import com.bedalton.common.util.nullIfEmpty
 import com.bedalton.io.bytes.MemoryByteStreamReader
 
@@ -45,11 +45,11 @@ internal suspend fun readGame(task: ConvertBreedTask): GameVariant {
 @Suppress("SpellCheckingInspection")
 internal suspend fun inferVariant(fs: FileSystem, filesIn: List<String>): GameVariant? {
     val files = filesIn.sortedBy {
-        FileNameUtil.getFileNameWithoutExtension(it.trim())?.lowercase() ?: "ZZZZZZZZZ"
+        PathUtil.getFileNameWithoutExtension(it.trim())?.lowercase() ?: "ZZZZZZZZZ"
     }
     return files.firstNotNullOfOrNull map@{
         val file = it.trim()
-        val fileName = FileNameUtil.getLastPathComponent(file)
+        val fileName = PathUtil.getLastPathComponent(file)
             ?: return@map null
         try {
             val reader = MemoryByteStreamReader(fs.read(file))

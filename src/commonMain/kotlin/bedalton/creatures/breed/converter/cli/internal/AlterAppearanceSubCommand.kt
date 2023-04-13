@@ -11,10 +11,10 @@ import com.bedalton.app.exitNativeWithError
 import com.bedalton.app.getCurrentWorkingDirectory
 import com.bedalton.cli.Flag
 import com.bedalton.cli.unescapeCLIPathAndQualify
-import com.bedalton.common.util.FileNameUtil
+import com.bedalton.common.util.PathUtil
 import com.bedalton.common.util.nullIfEmpty
 import com.bedalton.vfs.*
-import com.soywiz.kmem.clamp
+import com.bedalton.common.util.clamp
 import kotlinx.cli.ArgType
 import kotlinx.cli.ExperimentalCli
 import kotlinx.cli.Subcommand
@@ -180,8 +180,8 @@ internal class AlterAppearanceSubCommand(private val coroutineContext: Coroutine
             }
         val outputGenomeFile = outputGenomeFile?.let {unescapeCLIPathAndQualify(it, currentWorkingDirectory) }
         val roots = listOfNotNull(
-            FileNameUtil.getWithoutLastPathComponent(inputGenomeFile) ?: inputGenomeFile,
-            outputGenomeFile?.let { FileNameUtil.getWithoutLastPathComponent(outputGenomeFile) ?: outputGenomeFile},
+            PathUtil.getWithoutLastPathComponent(inputGenomeFile) ?: inputGenomeFile,
+            outputGenomeFile?.let { PathUtil.getWithoutLastPathComponent(outputGenomeFile) ?: outputGenomeFile},
             currentWorkingDirectory,
         )
         val breed = breedString?.getOrNull(0)

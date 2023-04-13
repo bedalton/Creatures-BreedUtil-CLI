@@ -7,7 +7,7 @@ import bedalton.creatures.common.structs.isC1e
 import bedalton.creatures.common.structs.isC2e
 import com.bedalton.log.*
 import bedalton.creatures.breed.converter.breed.getFromGame
-import com.bedalton.common.util.FileNameUtil
+import com.bedalton.common.util.PathUtil
 
 internal suspend fun readProgressiveArms(task: ConvertBreedTask, toGame: GameVariant, fromGame: GameVariant?): ConvertBreedTask {
 
@@ -27,7 +27,7 @@ internal suspend fun readProgressiveArms(task: ConvertBreedTask, toGame: GameVar
 internal suspend fun readGenerateTails(task: ConvertBreedTask, toGame: GameVariant, breedFiles: List<String>): ConvertBreedTask {
     // Add tail if C1 -> C2+
     if (task.getFromGame() == GameVariant.C1 && toGame != GameVariant.C1 && breedFiles.none {
-            val part = FileNameUtil.getLastPathComponent(it)?.getOrNull(0)?.lowercaseChar()
+            val part = PathUtil.getLastPathComponent(it)?.getOrNull(0)?.lowercaseChar()
             part == 'n' || part == 'm'
         }) {
         val noTails = !yes("${ConsoleColors.BOLD}Would you like to create tail files?${ConsoleColors.RESET}", true)
