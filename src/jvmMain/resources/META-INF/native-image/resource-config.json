@@ -1,0 +1,11 @@
+{
+  "resources": {
+    "includes": [
+      {
+        "pattern": ".*\\.(gen|gno)$"
+      }
+    ],
+    "excludes": []
+  },
+  "bundles": []
+}

@@ -1,9 +1,14 @@
 @file:Suppress("UNUSED_VARIABLE")
 
+import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
+import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+
 plugins {
     id("com.bedalton.multiplatform") version "1.0.0"
     kotlin("multiplatform")
     kotlin("plugin.serialization")
+    id("org.graalvm.buildtools.native") version "0.9.20"
+    id("com.github.johnrengelman.shadow") version "7.1.2"
     application
 }
 
@@ -53,6 +58,7 @@ kotlin {
         compilations.all {
             kotlinOptions.jvmTarget = "1.8"
         }
+        withJava()
         testRuns["test"].executionTask.configure {
             useJUnitPlatform()
         }
@@ -210,5 +216,43 @@ kotlin {
 }
 
 application {
-    mainClass.set("bedalton.creatures.breed.convert.cli.MainKt")
+    mainClass.set("bedalton.creatures.breed.converter.cli.Main_jvmKt")
 }
+
+graalvmNative {
+    binaries {
+        named("main") {
+            buildArgs.addAll(
+                listOf(
+                    "-H:DashboardDump=breed-util",
+                    "-H:+DashboardAll",
+                    "-H:+PrintClassInitialization",
+                    "-H:MaxDuplicationFactor=4",
+                    "-H:Log=registerResource:3",
+                    "-H:ResourceConfigurationFiles=${projectDir.path}/src/jvmMain/resources/META-INF/native-image/resource-config.json",
+                    "-H:ReflectionConfigurationFiles=${projectDir.path}/src/jvmMain/resources/META-INF/native-image/reflect-config.json"
+                )
+            )
+        }
+    }
+}
+
+val graalNativeTaskRegex = "native(Compile|Run|TestCompile)".toRegex(RegexOption.IGNORE_CASE)
+tasks.filter { graalNativeTaskRegex.matches(it.name) }.forEach {
+    it.group = "native"
+}
+
+tasks.withType<ShadowJar> {
+    manifest {
+        attributes("Main-Class" to "bedalton.creatures.breed.converter.cli.Main_jvmKt")
+    }
+    archiveClassifier.set("all")
+    val main by kotlin.jvm().compilations
+    from(main.output)
+    configurations.add(main.compileDependencyFiles)
+    configurations.add(main.runtimeDependencyFiles)
+}
+
+val compileKotlinJvm: KotlinCompile by tasks
+val compileJava: JavaCompile by tasks
+compileKotlinJvm.destinationDirectory.set(compileJava.destinationDirectory.get())
