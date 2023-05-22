@@ -1,5 +1,7 @@
 @file:Suppress("UNUSED_VARIABLE")
 
+import java.nio.file.Files
+import java.nio.file.Paths
 import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
@@ -134,7 +136,18 @@ kotlin {
             this.entryPoint = "bedalton.creatures.breed.converter.cli.main"
         }
     }
+    macosArm64() {
+        binaries.executable {
+            this.entryPoint = "bedalton.creatures.breed.converter.cli.main"
+        }
+    }
     linuxX64() {
+        binaries.executable {
+            this.entryPoint = "bedalton.creatures.breed.converter.cli.main"
+        }
+    }
+
+    linuxArm64() {
         binaries.executable {
             this.entryPoint = "bedalton.creatures.breed.converter.cli.main"
         }
@@ -256,3 +269,29 @@ tasks.withType<ShadowJar> {
 val compileKotlinJvm: KotlinCompile by tasks
 val compileJava: JavaCompile by tasks
 compileKotlinJvm.destinationDirectory.set(compileJava.destinationDirectory.get())
+
+
+
+afterEvaluate {
+    listOf(
+        "macosArm64",
+        "linuxArm64"
+    ).forEach { sourceName ->
+        for (main in listOf("Main", "Test")) {
+            tasks.getByName("compileKotlin${sourceName.capitalize()}") task@{
+                val file = File(projectDir, "src" + File.separator + sourceName + main)
+                if (file.exists()) {
+                    return@task
+                }
+                val otherName = sourceName.replace("Arm", "X")
+                val source = File(projectDir, "src" + File.separator + otherName + main)
+                if (source.exists()) {
+                    Files.createSymbolicLink(Paths.get(".", "src", sourceName + main), Paths.get(".", otherName + main))
+                } else {
+                    throw Exception("Cannot create symlinks for arm target $sourceName$main, as source folder for $otherName$main does not exist")
+                }
+            }
+        }
+    }
+}
+
