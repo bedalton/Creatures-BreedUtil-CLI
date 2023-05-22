@@ -4,7 +4,7 @@ package bedalton.creatures.breed.converter.cli.internal
 import bedalton.creatures.breed.converter.cli.genusArg
 import bedalton.creatures.breed.converter.genome.AlterGenomeOptions
 import bedalton.creatures.breed.converter.genome.alterGenome
-import bedalton.creatures.breed.converter.internal.Breed
+import bedalton.creatures.breed.converter.breed.Breed
 import bedalton.creatures.cli.*
 import bedalton.creatures.common.util.getGenusInt
 import com.bedalton.app.exitNativeWithError
