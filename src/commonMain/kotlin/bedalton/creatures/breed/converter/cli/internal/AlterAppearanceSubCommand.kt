@@ -33,10 +33,9 @@ internal class AlterAppearanceSubCommand(private val coroutineContext: Coroutine
         "The genome to alter"
     )
 
-    private val outputGenomeFile: String? by option(
+    private val outputGenomeFile: String? by argument(
         type = ArgType.String,
         fullName = "output-genome",
-        shortName = "o",
         description = "Altered genome output file path"
     )
 
