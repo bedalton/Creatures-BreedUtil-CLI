@@ -56,38 +56,38 @@ internal class AlterAppearanceSubCommand(private val coroutineContext: Coroutine
     private val head by option(
         PartBreedArg(),
         "head",
-        "Breed for head"
+        description = "Breed for head"
     )
 
     private val body by option(
         PartBreedArg(),
         "body",
-        "Breed for body"
+        description = "Breed for body"
     )
 
     private val legs by option(
         PartBreedArg(),
         "legs",
-        "Breed for legs"
+        description = "Breed for legs"
     )
 
 
     private val arms by option(
         PartBreedArg(),
         "arms",
-        "Breed for arms"
+        description = "Breed for arms"
     )
 
     private val tail by option(
         PartBreedArg(),
         "tail",
-        "Breed for tail"
+        description = "Breed for tail"
     )
 
     private val hair by option(
         PartBreedArg(),
         "hair",
-        "Breed for hair"
+        description = "Breed for hair"
     )
 
 
