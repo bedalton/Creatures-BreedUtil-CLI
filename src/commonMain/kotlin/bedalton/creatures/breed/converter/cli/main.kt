@@ -8,6 +8,8 @@ import com.bedalton.app.exitNative
 import com.bedalton.app.exitNativeOk
 import com.bedalton.common.coroutines.mapAsync
 import com.bedalton.app.setIsCLI
+import com.bedalton.common.util.Platform
+import com.bedalton.common.util.platform
 import com.bedalton.log.LOG_DEBUG
 import com.bedalton.log.Log
 import com.bedalton.log.enableCLIColors
@@ -81,8 +83,9 @@ suspend fun runMain(args: Array<String>, commandName: String = defaultCommandNam
         }
         1
     }
-    Log.i { "Done.." }
-    Log.i { "* Press enter to exit *" }
-    readln()
+    if (platform == Platform.WINDOWS) {
+        Log.i { "* Press enter to exit *" }
+        readln()
+    }
     CompletableDeferred(code)
 }.await()
