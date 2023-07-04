@@ -4,54 +4,55 @@ package bedalton.creatures.breed.converter.cli
 
 import bedalton.creatures.breed.converter.breed.*
 import bedalton.creatures.breed.converter.cli.internal.*
-import bedalton.creatures.cli.*
-import com.bedalton.cli.Flag
+import bedalton.creatures.cli.GameArgType
+import bedalton.creatures.common.structs.GameVariant
 import bedalton.creatures.common.structs.isC2e
-import bedalton.creatures.common.util.*
 import com.bedalton.app.exitNativeWithError
 import com.bedalton.app.getCurrentWorkingDirectory
 import com.bedalton.cli.readInt
 import com.bedalton.common.util.className
-import com.bedalton.log.*
 import com.bedalton.log.ConsoleColors.BLACK
 import com.bedalton.log.ConsoleColors.BOLD
 import com.bedalton.log.ConsoleColors.RED
 import com.bedalton.log.ConsoleColors.RESET
 import com.bedalton.log.ConsoleColors.WHITE_BACKGROUND
-import com.bedalton.vfs.*
-import kotlinx.cli.Subcommand
-import kotlinx.cli.default
-import kotlinx.coroutines.*
+import com.bedalton.log.Log
+import com.bedalton.log.eIf
+import com.bedalton.vfs.ERROR_CODE__BAD_INPUT_FILE
+import com.bedalton.vfs.ShouldOverwrite
+import kotlinx.cli.ArgType
+import kotlinx.cli.optional
+import kotlinx.cli.vararg
+import kotlinx.coroutines.Deferred
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.async
 import kotlin.coroutines.CoroutineContext
 
 const val ASK_CLI_NAME = "ask"
 
 class ConvertBreedAskCli(private val coroutineContext: CoroutineContext, private val jobs: MutableList<Deferred<Int>>) :
-    Subcommand(ASK_CLI_NAME, "Step by step breed conversion walk-through") {
+    ConvertBreedSubcommandBase(ASK_CLI_NAME, "Step by step breed conversion walk-through") {
+
+    val toGame by argument(
+        GameArgType,
+        "target-game",
+        description = "The target game for conversion"
+    ).optional()
 
 
-    private val overwriteExisting by option(
-        Flag,
-        "force",
-        shortName = "f",
-        description = "Force overwrite of existing files",
-    ).default(false)
+    internal val files: List<String> by argument(
+        type = ArgType.String,
+        fullName = "images",
+        description = "Image files or folders"
+    ).optional().vararg()
 
-    private val overwriteNone by option(
-        Flag,
-        "skip-existing",
-        shortName = "x",
-        description = "Skip existing files"
-    ).default(false)
-
-    private val noAsync by option(
-        Flag,
-        "no-async",
-        shortName = null,
-        description = "Do not convert sprites asynchronously"
-
+    @Suppress("SpellCheckingInspection")
+    override val outputGenus: String? by option(
+        GenusArg,
+        "genus",
+        shortName = "g",
+        description = "The output genus: [n]orn, [g]rendel, [e]ttin, [s]hee, geat"
     )
-
 
     override fun execute() {
         val job = GlobalScope.async(coroutineContext) {
@@ -95,48 +96,55 @@ class ConvertBreedAskCli(private val coroutineContext: CoroutineContext, private
         }
 
         // Target game
-        val toGame = readGame(task)
+        val toGame = toGame ?: readGame(task)
 
         // Get breed sprite files
-        val breedFiles = readBreedFiles(task.getFromGame() ?: bedalton.creatures.common.structs.GameVariant.C3, fs, task, baseDirectory)
-        
+        val breedFiles = readBreedFiles(task.getFromGame() ?: GameVariant.C3, fs, task, baseDirectory, files)
+
 
         // Determine from game
         val fromGame = inferVariant(fs, breedFiles)
         task.withFromGame(fromGame)
 
         // Get Output directory
-        readOutputDirectory(task, baseDirectory)
+        readOutputDirectory(task, baseDirectory, this)
 
 
         // Read output genus breed
-        readOutputBreedGenus(task)
-        readOutputBreed(task, toGame)
+        readOutputBreedGenus(task, this)
+        readOutputBreed(task, toGame, this)
+
 
         // Convert ATTs
-        readAttDirectory(fs, task, baseDirectory)
+        readAttDirectory(fs, task, baseDirectory, files)
         // Convert Genome
-        readConvertGenome(fs, task, baseDirectory)
+        readConvertGenome(fs, task, baseDirectory, this)
+
         // Progressive Arms
-        readProgressiveArms(task, toGame, fromGame)
+        readProgressiveArms(task, toGame, fromGame, this)
         // Generate Tails
-        readGenerateTails(task, toGame, breedFiles)
+        readGenerateTails(task, toGame, breedFiles, this)
         // Progress ages between C1e and C2e
-        readProgressAges(task, toGame, fromGame)
+        readProgressAges(task, toGame, fromGame, this)
 
         // Should make all sprites the same size
         if (toGame.isC2e) {
-            val sameSize = yes("${BOLD}Would you like to make all images within a breed file the same size$RESET")
+            val sameSize =
+                this.sameSize || yes("${BOLD}Would you like to make all images within a breed file the same size$RESET")
             task.withSameSize(sameSize)
             if (sameSize) {
-                val padding = readInt("${BOLD}Padding to add around same-size images$RESET; [Default = ${BOLD}0$RESET]", true, null)
-                    ?: 0
+                val padding = this.sameSizePadding ?: readInt(
+                    "${BOLD}Padding to add around same-size images$RESET; [Default = ${BOLD}0$RESET]",
+                    true,
+                    null
+                )
+                ?: 0
                 task.withSameSizePadding(padding)
             }
         }
 
         // Show progress
-        val progress = yes("${BOLD}Show conversion progress?$RESET", true)
+        val progress = this.progress || yes("${BOLD}Show conversion progress?$RESET", true)
         task.withProgress(progress)
 
 

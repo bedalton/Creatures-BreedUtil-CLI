@@ -6,29 +6,37 @@ import bedalton.creatures.breed.converter.breed.BreedRegexUtil.BREED_SPRITE_FILE
 import bedalton.creatures.breed.converter.breed.BreedRegexUtil.getBreedSpriteFileRegex
 import bedalton.creatures.breed.converter.breed.ConvertBreedTask
 import bedalton.creatures.breed.converter.breed.withFiles
-import bedalton.creatures.cli.*
-import bedalton.creatures.common.structs.*
-import bedalton.creatures.common.util.*
+import bedalton.creatures.common.structs.GameVariant
+import bedalton.creatures.common.util.getGenusInt
+import bedalton.creatures.common.util.getGenusString
 import com.bedalton.app.exitNativeWithError
 import com.bedalton.cli.unescapeCLIPathAndQualify
 import com.bedalton.common.util.PathUtil
 import com.bedalton.common.util.nullIfEmpty
 import com.bedalton.common.util.stripSurroundingQuotes
-import com.bedalton.log.*
+import com.bedalton.common.util.toListOf
+import com.bedalton.log.ConsoleColors
 import com.bedalton.log.ConsoleColors.BOLD
 import com.bedalton.log.ConsoleColors.RED
 import com.bedalton.log.ConsoleColors.RESET
 import com.bedalton.log.ConsoleColors.WHITE_BACKGROUND
 import com.bedalton.log.ConsoleColors.YELLOW
+import com.bedalton.log.Log
 import com.bedalton.vfs.*
 
 
 /**
  * Read and filter breed sprite files
  */
-internal suspend fun readBreedFiles(fromVariant: GameVariant, fs: FileSystem, task: ConvertBreedTask, baseDirectory: String): List<String> {
+internal suspend fun readBreedFiles(
+    fromVariant: GameVariant,
+    fs: FileSystem,
+    task: ConvertBreedTask,
+    baseDirectory: String,
+    rawFiles: List<String>
+): List<String> {
 
-    val spriteFiles: List<String> = readRawFiles(fs, task, baseDirectory)
+    val spriteFiles: List<String> = readRawFiles(fs, task, baseDirectory, rawFiles)
 
     // Create options object
     val breedOptions = fileBreedOptions(spriteFiles)
@@ -51,7 +59,7 @@ internal suspend fun readBreedFiles(fromVariant: GameVariant, fs: FileSystem, ta
     // Filter available sprite breeds by selected genus
     val possibleBreeds = breedOptions
         .filter { it.second.first == selectedGenusInt }
-    val breed = readInputBreed(task, genus.second,  possibleBreeds.map { it.third }.toSet())
+    val breed = readInputBreed(task, genus.second, possibleBreeds.map { it.third }.toSet())
     val regex = getBreedSpriteFileRegex(
         Pair(genus.first.digitToChar(), (genus.first + 4).digitToChar()),
         breed,
@@ -66,7 +74,22 @@ internal suspend fun readBreedFiles(fromVariant: GameVariant, fs: FileSystem, ta
 /**
  * Ask for sprite files
  */
-private suspend fun readRawFiles(fs: FileSystem, task: ConvertBreedTask, baseDirectory: String): List<String> {
+private suspend fun readRawFiles(
+    fs: FileSystem,
+    task: ConvertBreedTask,
+    baseDirectory: String,
+    filesIn: List<String>
+): List<String> {
+
+    // processFilesArgs
+    filesIn
+        .flatMap{ path ->
+            unpackBreedFilePaths(fs, path, baseDirectory)
+        }
+        .nullIfEmpty()
+        ?.let {
+            return it
+        }
     // Try and get sprite files
     val spriteFiles: List<String>
     while (true) {
@@ -98,6 +121,18 @@ private suspend fun readRawFiles(fs: FileSystem, task: ConvertBreedTask, baseDir
 }
 
 
+internal suspend fun unpackBreedFilePaths(
+    fs: FileSystem,
+    path: String,
+    baseDirectory: String,
+    extensions: Set<String> = setOf("spr", "s16", "c16"),
+    regex: Regex = BREED_SPRITE_FILE_REGEX
+): List<String> {
+    return unescapeCLIPathAndQualify(path, baseDirectory)
+        ?.toListOf()
+        ?.unpackPathsSafe(fs, extensions, regex)
+        .orEmpty()
+}
 
 internal suspend fun readGenus(
     variant: GameVariant,
@@ -150,7 +185,7 @@ internal suspend fun readGenus(
                             Log.e { WHITE_BACKGROUND + RED + "Genus cannot be blank...$RESET" }
                             null
                         }
-                    )
+                        )
             genusInt = try {
                 genus?.let { getGenusInt(genus) }
             } catch (e: Exception) {
@@ -204,7 +239,6 @@ internal suspend fun readInputBreed(task: ConvertBreedTask, genus: String, possi
 }
 
 
-
 private fun intToGenusString(genus: Int, geat: String = "Geat"): String? {
     return when (genus) {
         0, 4 -> "Norn"
@@ -214,7 +248,6 @@ private fun intToGenusString(genus: Int, geat: String = "Geat"): String? {
         else -> null
     }
 }
-
 
 
 /**

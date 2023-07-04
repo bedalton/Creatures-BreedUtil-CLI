@@ -2,6 +2,7 @@ package bedalton.creatures.breed.converter.cli.internal
 
 import bedalton.creatures.breed.converter.breed.ConvertBreedTask
 import bedalton.creatures.breed.converter.breed.getToGame
+import bedalton.creatures.breed.converter.cli.ConvertBreedSubcommandBase
 import bedalton.creatures.breed.converter.genome.getDefaultGenomeFile
 import bedalton.creatures.common.structs.GameVariant
 import com.bedalton.common.util.nullIfEmpty
@@ -13,7 +14,7 @@ import com.bedalton.vfs.unescapePath
 import com.bedalton.vfs.unpackPathsSafe
 
 
-internal suspend fun readConvertGenome(fs: FileSystem, task: ConvertBreedTask, baseDirectory: String) {
+internal suspend fun readConvertGenome(fs: FileSystem, task: ConvertBreedTask, baseDirectory: String, subcommand: ConvertBreedSubcommandBase) {
     // Check if we should alter genome
     Log.i {
         "${ConsoleColors.BLACK_BACKGROUND + ConsoleColors.WHITE}Genome files for the target game can be altered with the new breed.\n" +
@@ -26,15 +27,7 @@ internal suspend fun readConvertGenome(fs: FileSystem, task: ConvertBreedTask, b
             return
         }
         readGenome(fs, false, null, baseDirectory, task::withOutputGenome)
-        val outputGenomeGenus = readGenus(
-            task.getToGame() ?: GameVariant.C3,
-            setOf(0, 1, 2, 3),
-            "(Optional) Set actual creature genus for genome (not related to appearance)",
-            true
-        )
-        if (outputGenomeGenus != null) {
-            task.withOutputGenomeGenus(outputGenomeGenus.second)
-        }
+        readOutputGenomeGenus(task, subcommand)
     }
 }
 
@@ -104,5 +97,25 @@ private suspend fun readGenome(
             continue
         }
         break
+    }
+}
+
+private suspend fun readOutputGenomeGenus(task: ConvertBreedTask, subcommand: ConvertBreedSubcommandBase) {
+    subcommand.outputGenus?.let {
+        try {
+            task.withOutputGenomeGenus(it)
+            return
+        } catch (_: Exception) {
+            Log.e { "Invalid genome genus passed to convert breed; Expected: n[orn], g[rendel], e[ttin], s[hee], geat; Found: $it" }
+        }
+    }
+    val outputGenomeGenus = readGenus(
+        task.getToGame() ?: GameVariant.C3,
+        setOf(0, 1, 2, 3),
+        "(Optional) Set actual creature genus for genome (not related to appearance)",
+        true
+    )
+    if (outputGenomeGenus != null) {
+        task.withOutputGenomeGenus(outputGenomeGenus.second)
     }
 }

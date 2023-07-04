@@ -6,6 +6,7 @@ import bedalton.creatures.common.util.getGenusInt
 import com.bedalton.app.exitNativeWithError
 import com.bedalton.cli.unescapeCLIPathAndQualify
 import com.bedalton.common.util.ensureEndsWith
+import com.bedalton.common.util.isNotNullOrEmpty
 import com.bedalton.common.util.nullIfEmpty
 import com.bedalton.common.util.pathSeparatorChar
 import com.bedalton.log.ConsoleColors
@@ -20,16 +21,27 @@ import com.bedalton.vfs.unpackPathsSafe
 val askATTPrompt = "${BOLD}Enter source ATT directory${ConsoleColors.RESET}: (type or drag folder into window, then press enter)\n\t- "
 
 
-internal suspend fun readAttDirectory(fs: FileSystem, task: ConvertBreedTask, basePath: String): ConvertBreedTask {
+internal suspend fun readAttDirectory(fs: FileSystem, task: ConvertBreedTask, basePath: String, filesIn: List<String>): ConvertBreedTask {
 
     // Check if we should convert atts
     if (!yes("${BOLD}Convert Atts?${ConsoleColors.RESET}")) {
         return task
     }
+
     val genusString = task.getInputBreedGenus()
         ?: exitNativeWithError(ERROR_CODE__FAILED) { ConsoleColors.WHITE_BACKGROUND + ConsoleColors.RED + "Input genus set failed in an earlier step${ConsoleColors.RESET}" }
     val genus = getGenusInt(genusString).let {
         Pair(it.digitToChar(), (it + 4).digitToChar())
+    }
+    val regex = getBreedSpriteFileRegex(genus, task.getInputBreed()!![0], setOf("att"))
+
+    // processFilesArgs
+    val attFilesInFolder = filesIn
+        .firstOrNull { path ->
+            listOf(path).unpackPathsSafe(fs, setOf("att"), regex, root = basePath).isNotEmpty()
+        }
+    if (attFilesInFolder.isNotNullOrEmpty()) {
+        return task.withAttDirectory(attFilesInFolder)
     }
     var hits = 0
     while (true) {
@@ -48,7 +60,6 @@ internal suspend fun readAttDirectory(fs: FileSystem, task: ConvertBreedTask, ba
         val temp2 = if (!temp.endsWith(".att") && !temp.endsWith("*")) {
             temp.ensureEndsWith(pathSeparatorChar) + "*.att"
         } else null
-        val regex = getBreedSpriteFileRegex(genus, task.getInputBreed()!![0], setOf("att"))
         val atts = try {
             listOf(temp)
                 .unpackPathsSafe(fs, setOf("att"), regex, root = basePath)
