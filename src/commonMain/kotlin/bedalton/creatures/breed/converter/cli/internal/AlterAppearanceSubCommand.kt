@@ -48,7 +48,7 @@ internal class AlterAppearanceSubCommand(private val coroutineContext: Coroutine
 
     @Suppress("SpellCheckingInspection")
     private val outputGenomeGenus by option(
-        genusArg,
+        GenusArg,
         "genome-genus",
         description = "The genus of the creature, separate from appearance. Values: [n]orn, [g]rendel, [e]ttin, [s]hee, geat"
     )
