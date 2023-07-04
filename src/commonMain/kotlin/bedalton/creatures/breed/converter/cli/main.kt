@@ -41,11 +41,13 @@ suspend fun runMain(args: Array<String>, commandName: String = defaultCommandNam
     Log.iIf(LOG_DEBUG) { "Convert Breed Added" }
     val alterAppearanceSubCommand = AlterAppearanceSubCommand(coroutineContext, jobs)
     Log.iIf(LOG_DEBUG) { "Alter Appearance Added" }
+    val printGeneData = PrintGeneDataCLI(coroutineContext, jobs)
+    Log.iIf(LOG_DEBUG) { "Convert breed Ask Added" }
     val convertBreedAskSubCommand = ConvertBreedAskCli(coroutineContext, jobs)
     Log.iIf(LOG_DEBUG) { "Convert breed Ask Added" }
 
     // Add subcommands to parse
-    val subcommands = arrayOf(convertBreedSubcommand, convertBreedAskSubCommand, alterAppearanceSubCommand)
+    val subcommands = arrayOf(convertBreedSubcommand, convertBreedAskSubCommand, alterAppearanceSubCommand, printGeneData)
 
     Log.iIf(LOG_DEBUG) { "Setting subcommands" }
     parser.subcommands(*subcommands)
