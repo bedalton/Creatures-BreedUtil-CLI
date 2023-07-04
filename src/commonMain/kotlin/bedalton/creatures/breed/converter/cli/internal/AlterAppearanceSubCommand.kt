@@ -1,11 +1,10 @@
 @file:Suppress("unused")
 
 package bedalton.creatures.breed.converter.cli.internal
-import bedalton.creatures.breed.converter.cli.genusArg
+import bedalton.creatures.breed.converter.breed.Breed
 import bedalton.creatures.breed.converter.genome.AlterGenomeOptions
 import bedalton.creatures.breed.converter.genome.alterGenome
-import bedalton.creatures.breed.converter.breed.Breed
-import bedalton.creatures.cli.*
+import bedalton.creatures.cli.PartBreedArg
 import bedalton.creatures.common.util.getGenusInt
 import com.bedalton.app.exitNativeWithError
 import com.bedalton.app.getCurrentWorkingDirectory
@@ -41,16 +40,8 @@ internal class AlterAppearanceSubCommand(private val coroutineContext: Coroutine
         description = "Altered genome output file path"
     )
 
-
-    @Suppress("SpellCheckingInspection")
-    private val defaultPartGenus by option(
-        genusArg,
-        "part-genus",
-        description = "The default part genus: [n]orn, [g]rendel, [e]ttin, [s]hee, geat"
-    )
-
     private val breed by option(
-        ArgType.String,
+        PartBreedArg(),
         "breed",
         shortName = "b",
         description = "The default breed to use for all body parts. "
@@ -166,11 +157,6 @@ internal class AlterAppearanceSubCommand(private val coroutineContext: Coroutine
                 ERROR_CODE__BAD_INPUT_FILE,
                 "Failed to obtain current working directory"
             )
-        val genus = defaultPartGenus
-        val breedString = breed
-        if (breedString != null && breedString.length != 1) {
-            exitNativeWithError(1) { "Invalid breed value. Expected a single digit or single letter" }
-        }
         if (overwriteExisting && overwriteNone) {
             exitNativeWithError(ERROR_CODE__OVERWRITE_CONFLICTS) { "Error: $ERROR_CODE__OVERWRITE_CONFLICTS: Overwrite none conflicts with force/overwrite existing" }
         }
@@ -184,7 +170,7 @@ internal class AlterAppearanceSubCommand(private val coroutineContext: Coroutine
             outputGenomeFile?.let { PathUtil.getWithoutLastPathComponent(outputGenomeFile) ?: outputGenomeFile},
             currentWorkingDirectory,
         )
-        val breed = breedString?.getOrNull(0)
+        val breed = breed
         val fs = roots.nullIfEmpty()?.let { ScopedFileSystem(roots) } ?: LocalFileSystem ?: UnscopedFileSystem()
         val overwriteDefault = if (overwriteExisting) {
             OverwriteDefault.ALWAYS
@@ -200,8 +186,8 @@ internal class AlterAppearanceSubCommand(private val coroutineContext: Coroutine
             outputDirectory = currentWorkingDirectory,
             alterSleepPose = alterSleepPose,
             breed = Breed(
-                defaultPartGenus = genus?.let { getGenusInt(it) },
-                defaultPartBreed = breed,
+                defaultPartGenus = breed?.first,
+                defaultPartBreed = breed?.second,
                 outputGenomeGenus = outputGenomeGenus?.let { getGenusInt(it) },
                 head = head,
                 body = body,
