@@ -35,18 +35,21 @@ internal suspend fun readLineCancellable(prompt: String): String? {
     return response
 }
 
-internal suspend fun yes(prompt: String, default: Boolean? = null, shouldAbortOnNothing: (suspend () -> Boolean?)? = null): Boolean {
-    return yesNullable(prompt, default, shouldAbortOnNothing) == true
+internal suspend fun yes(prompt: String, default: Boolean? = null, showYesNo: Boolean = true, shouldAbortOnNothing: (suspend () -> Boolean?)? = null): Boolean {
+    return yesNullable(prompt, default, showYesNo, shouldAbortOnNothing) == true
 }
 
-internal suspend fun yesNullable(prompt: String, default: Boolean? = null, shouldAbortOnNothing: (suspend () -> Boolean?)? = null): Boolean? {
+internal suspend fun yesNullable(prompt: String, default: Boolean? = null, showYesNo: Boolean = true, shouldAbortOnNothing: (suspend () -> Boolean?)? = null): Boolean? {
     while (true) {
-        val temp = readLineCancellable(
+        val promptActual = if (showYesNo) {
             "$prompt: " +
                     "[${ConsoleColors.BOLD}Y${ConsoleColors.RESET}]es${if (default == true) "(default)" else ""}, " +
                     "[${ConsoleColors.BOLD}N${ConsoleColors.RESET}]o?${if (default == false) "(default)" else ""}: " +
                     "\n\t- "
-        )
+        } else {
+            "$prompt - "
+        }
+        val temp = readLineCancellable(promptActual)
             ?.stripSurroundingQuotes(2, true)
             ?.nullIfEmpty()
         if (temp == null) {
@@ -60,8 +63,8 @@ internal suspend fun yesNullable(prompt: String, default: Boolean? = null, shoul
             continue
         }
         when (temp.lowercase()) {
-            "y", "yes", "true" -> return true
-            "n", "no", "false" -> return false
+            "y", "yes", "true", "t", "1" -> return true
+            "n", "no", "false", "f", "0" -> return false
             else -> Log.e { ConsoleColors.WHITE_BACKGROUND + ConsoleColors.RED + "Invalid [Y]es, [N]o value" + ConsoleColors.RESET }
         }
     }
