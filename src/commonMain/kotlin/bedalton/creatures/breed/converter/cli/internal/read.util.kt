@@ -1,10 +1,13 @@
 package bedalton.creatures.breed.converter.cli.internal
 
-import com.bedalton.common.util.nullIfEmpty
-import com.bedalton.common.util.stripSurroundingQuotes
 import com.bedalton.app.exitNativeOk
 import com.bedalton.cli.readLine
+import com.bedalton.common.util.className
+import com.bedalton.common.util.isNotNullOrBlank
+import com.bedalton.common.util.nullIfEmpty
+import com.bedalton.common.util.stripSurroundingQuotes
 import com.bedalton.log.ConsoleColors
+import com.bedalton.log.LOG_DEBUG
 import com.bedalton.log.Log
 
 
@@ -62,4 +65,18 @@ internal suspend fun yesNullable(prompt: String, default: Boolean? = null, shoul
             else -> Log.e { ConsoleColors.WHITE_BACKGROUND + ConsoleColors.RED + "Invalid [Y]es, [N]o value" + ConsoleColors.RESET }
         }
     }
+}
+
+internal fun Exception.formatted(printStack: Boolean = Log.hasMode(LOG_DEBUG)): String {
+    val stack = if (printStack) {
+        "\n" + stackTraceToString()
+    } else {
+        ""
+    }
+    val message = if (message.isNotNullOrBlank()) {
+        ":" + message
+    } else {
+        ""
+    }
+    return "${className}$message$stack"
 }
