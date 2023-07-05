@@ -83,3 +83,7 @@ internal fun Exception.formatted(printStack: Boolean = Log.hasMode(LOG_DEBUG)): 
     }
     return "${className}$message$stack"
 }
+
+internal fun String.capitalize(): String {
+    return replaceFirstChar { if (it.isLowerCase()) it.titlecase() else it.toString() }
+}
