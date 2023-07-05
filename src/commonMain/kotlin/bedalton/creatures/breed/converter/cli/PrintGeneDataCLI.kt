@@ -1,6 +1,9 @@
+@file:Suppress("SpellCheckingInspection")
+
 package bedalton.creatures.breed.converter.cli
 
 import bedalton.creatures.breed.converter.cli.internal.formatted
+import bedalton.creatures.breed.converter.cli.internal.getGenomeFromFile
 import bedalton.creatures.breed.converter.cli.internal.yesNullable
 import com.bedalton.app.exitNativeWithError
 import com.bedalton.app.getCurrentWorkingDirectory
@@ -10,7 +13,6 @@ import com.bedalton.common.util.PathUtil
 import com.bedalton.common.util.nullIfEmpty
 import com.bedalton.creatures.breed.converter.genome.GeneFilter
 import com.bedalton.creatures.genetics.gene.Gene
-import com.bedalton.creatures.genetics.parser.GenomeParser
 import com.bedalton.log.Log
 import com.bedalton.vfs.ScopedFileSystem
 import kotlinx.cli.ArgType
@@ -32,6 +34,12 @@ class PrintGeneDataCLI(
         ArgType.String,
         description = "Genome, Export or C2 egg file to parse"
     )
+
+    private val genomeIndex by option(
+        ArgType.Int,
+        "genome-index",
+        description = "Index in egg or in multi-creature exports"
+    ).default(0)
 
     private val ask by option(
         Flag,
@@ -180,7 +188,7 @@ class PrintGeneDataCLI(
     )
 
     override fun execute() {
-        jobs.add(GlobalScope.async {
+        jobs.add(GlobalScope.async(coroutineContext) {
             run()
         })
     }
@@ -203,25 +211,9 @@ class PrintGeneDataCLI(
             output = PathUtil.combine(cwd, output)
         }
 
-        val fs = ScopedFileSystem(listOfNotNull(
-            PathUtil.getWithoutLastPathComponent(genomePath),
-            genomePath,
-            output?.let { PathUtil.getWithoutLastPathComponent(it) }
-        ))
-        if (!fs.fileExists(genomePath)) {
-            exitNativeWithError(1, "Genome does not exist at ${genomePath}")
-        }
-
-        val genomeBytes = try {
-            fs.read(genomePath)
-        } catch (e: Exception) {
-            exitNativeWithError(1) {
-                "Failed to read genome at $genomePath;\n${e.formatted()}"
-            }
-        }
 
         val genome = try {
-            GenomeParser.parseGenome(genomeBytes, true)
+            getGenomeFromFile(genomePath, genomeIndex)
         } catch (e: Exception) {
             exitNativeWithError(1) {
                 val genomeType = when (PathUtil.getExtension(genomePath)?.lowercase()) {
@@ -240,6 +232,15 @@ class PrintGeneDataCLI(
             ignoreUnknownKeys = true
             prettyPrint = pretty
         }
+
+        val fs = ScopedFileSystem(listOfNotNull(
+            output?.let { PathUtil.getWithoutLastPathComponent(it) },
+            output
+        ))
+        if (!fs.fileExists(genomePath)) {
+            exitNativeWithError(1, "Genome does not exist at $genomePath")
+        }
+
         val jsonString = json.encodeToString<List<Gene>>(genes)
         if (output != null) {
             fs.write(output, jsonString)
