@@ -2,9 +2,9 @@
 
 package bedalton.creatures.breed.converter.cli.internal
 
-import bedalton.creatures.breed.converter.breed.ConvertBreedTask
+import com.bedalton.creatures.breed.converter.breed.ConvertBreedTask
 import bedalton.creatures.breed.converter.cli.ConvertBreedSubcommandBase
-import bedalton.creatures.common.structs.GameVariant
+import com.bedalton.creatures.common.structs.GameVariant
 import com.bedalton.common.util.nullIfEmpty
 import com.bedalton.common.util.stripSurroundingQuotes
 import com.bedalton.log.ConsoleColors

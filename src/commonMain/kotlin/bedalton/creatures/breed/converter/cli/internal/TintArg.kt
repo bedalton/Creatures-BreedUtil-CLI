@@ -2,11 +2,11 @@ package bedalton.creatures.breed.converter.cli.internal
 
 //import com.bedalton.log.ConsoleColors.BOLD
 //import com.bedalton.log.ConsoleColors.RESET
-//import bedalton.creatures.common.structs.GameVariant
-//import bedalton.creatures.common.util.IOException
-//import bedalton.creatures.genetics.gene.GeneFlags
-//import bedalton.creatures.genetics.gene.GeneHeader
-//import bedalton.creatures.genetics.gene.PigmentGene
+//import com.bedalton.creatures.common.structs.GameVariant
+//import com.bedalton.creatures.common.util.IOException
+//import com.bedalton.creatures.genetics.gene.GeneFlags
+//import com.bedalton.creatures.genetics.gene.GeneHeader
+//import com.bedalton.creatures.genetics.gene.PigmentGene
 //import kotlinx.cli.ArgType
 //
 //class PigmentArg(private val replace: kotlin.Int) : ArgType<PigmentOption>(true) {

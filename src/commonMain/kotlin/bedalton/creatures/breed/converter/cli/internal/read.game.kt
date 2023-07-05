@@ -1,15 +1,15 @@
 package bedalton.creatures.breed.converter.cli.internal
 
-import bedalton.creatures.breed.converter.breed.ConvertBreedTask
-import bedalton.creatures.common.structs.GameVariant
-import bedalton.creatures.sprite.parsers.SpriteParser
+import com.bedalton.creatures.breed.converter.breed.ConvertBreedTask
+import com.bedalton.creatures.common.structs.GameVariant
+import com.bedalton.creatures.sprite.parsers.SpriteParser
 import com.bedalton.vfs.FileSystem
 import com.bedalton.log.ConsoleColors.BOLD
 import com.bedalton.log.ConsoleColors.RED
 import com.bedalton.log.ConsoleColors.RESET
 import com.bedalton.log.ConsoleColors.WHITE_BACKGROUND
 import com.bedalton.log.*
-import bedalton.creatures.breed.converter.breed.withToGame
+import com.bedalton.creatures.breed.converter.breed.withToGame
 import com.bedalton.common.util.PathUtil
 import com.bedalton.common.util.nullIfEmpty
 import com.bedalton.io.bytes.MemoryByteStreamReader

@@ -1,6 +1,6 @@
 package bedalton.creatures.breed.converter.cli.internal
 
-import bedalton.creatures.breed.converter.breed.ConvertBreedTask
+import com.bedalton.creatures.breed.converter.breed.ConvertBreedTask
 import bedalton.creatures.breed.converter.cli.ConvertBreedSubcommandBase
 import com.bedalton.app.exitNativeWithError
 import com.bedalton.cli.unescapeCLIPathAndQualify

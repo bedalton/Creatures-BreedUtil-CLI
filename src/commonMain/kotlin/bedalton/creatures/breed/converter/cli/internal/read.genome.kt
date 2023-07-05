@@ -1,10 +1,10 @@
 package bedalton.creatures.breed.converter.cli.internal
 
-import bedalton.creatures.breed.converter.breed.ConvertBreedTask
-import bedalton.creatures.breed.converter.breed.getToGame
+import com.bedalton.creatures.breed.converter.breed.ConvertBreedTask
+import com.bedalton.creatures.breed.converter.breed.getToGame
 import bedalton.creatures.breed.converter.cli.ConvertBreedSubcommandBase
-import bedalton.creatures.breed.converter.genome.getDefaultGenomeFile
-import bedalton.creatures.common.structs.GameVariant
+import com.bedalton.creatures.breed.converter.genome.getDefaultGenomeFile
+import com.bedalton.creatures.common.structs.GameVariant
 import com.bedalton.common.util.nullIfEmpty
 import com.bedalton.log.ConsoleColors
 import com.bedalton.log.Log

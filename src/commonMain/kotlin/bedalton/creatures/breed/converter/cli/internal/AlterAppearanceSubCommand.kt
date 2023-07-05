@@ -1,11 +1,11 @@
 @file:Suppress("unused")
 
 package bedalton.creatures.breed.converter.cli.internal
-import bedalton.creatures.breed.converter.breed.Breed
-import bedalton.creatures.breed.converter.genome.AlterGenomeOptions
-import bedalton.creatures.breed.converter.genome.alterGenome
-import bedalton.creatures.cli.PartBreedArg
-import bedalton.creatures.common.util.getGenusInt
+import com.bedalton.creatures.breed.converter.breed.Breed
+import com.bedalton.creatures.breed.converter.genome.AlterGenomeOptions
+import com.bedalton.creatures.breed.converter.genome.alterGenome
+import com.bedalton.creatures.cli.PartBreedArg
+import com.bedalton.creatures.common.util.getGenusInt
 import com.bedalton.app.exitNativeWithError
 import com.bedalton.app.getCurrentWorkingDirectory
 import com.bedalton.cli.Flag

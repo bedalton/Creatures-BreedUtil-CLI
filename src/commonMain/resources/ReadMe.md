@@ -229,24 +229,30 @@ Appearance genes follow the format: `{genus}:{breed}`.
 Genus can be `norn` or `n`, `grendel` or `g`, `ettin` or `e`, `geat` or `shee` or `s`.  
 **NOTE:** The shorthand for GEAT is '**S**' not 'G'. **'G' is for Grendel only**
 
-```SHELL
+```
 Arguments: 
     input-genome -> The genome to alter { String }
+    output-genome -> Altered genome output file path { String }
 Options: 
-    --output-genome -> Altered genome output file path { String }
-    --genus, -g -> The output genus: [n]orn, [g]rendel, [e]ttin, [s]hee, geat { Value should be one of [n, norn, g, grendel, e, ettin, s, shee, geat] }
-    --breed, -b -> The default breed slot for all body parts { String }
-    --head -> Breed for head Expected pattern  "norn:a" or "n:z"; 'g:' is grendel. use 's:' for geat
-    --body -> Breed for body Expected pattern  "norn:a" or "n:z"
-    --legs -> Breed for legs Expected pattern  "norn:a" or "n:z"
-    --arms -> Breed for arms Expected pattern  "norn:a" or "n:z"
-    --tail -> Breed for tail Expected pattern  "norn:a" or "n:z"
-    --hair -> Breed for hair Expected pattern  "norn:a" or "n:z"
-    --alter-sleep, -s [false] -> Alter the sleep pose to handle conversions between C1e and C2e
+    --genome-genus -> The genus of the creature, separate from appearance. Values: [n]orn, [g]rendel, [e]ttin, [s]hee, geat
+    --alter-sleep, -s [false] -> Alter sleep/death pose to support C1e to C2e conversions. 
     --force, -f [false] -> Force overwrite of existing files 
     --skip-existing, -x [false] -> Skip existing files 
     --help, -h -> Usage info 
-
+Breed: Expected pattern {genus}:{breed}; I.e. "norn:a" or "n:g"; Note: 'g:' is grendel. use 's:' for geat
+    --breed, -b -> The default breed to use for all body parts. 
+    --head -> Breed for head
+    --body -> Breed for body
+    --legs -> Breed for legs
+    --arms -> Breed for arms
+    --tail -> Breed for tail
+    --hair -> Breed for hair
+Color:
+    --red -> Red tint to apply { Int }
+    --green -> Green tint to apply { Int }
+    --blue -> Blue tint to apply { Int }
+    --swap -> Color swap between red and blue { Int }
+    --rotation -> Color rotation or shifting of red, green and blue channels { Int }
 ```
 
 ### Usage  
@@ -254,7 +260,11 @@ Options:
 **# Change all parts to same genus/breed**  
 To alter a genome to use norn slot for all body parts and save to a new file called `norn.new.gen`, use:
 ```console
-breed-util alter-genome --genus norn --breed a --output-genome ./norn.new.gen
+
+breed-util alter-genome ./norn.existing.gen ./norn.new.gen--breed n:a --output-genome
+
+
+
 ```
 
 **# Change head only**

@@ -42,6 +42,8 @@ val creaturesCommonCoreVersion: String by project
 val creaturesCommonGenomeVersion: String by project
 val creaturesBreedUtilVersion: String by project
 val creaturesSpriteUtilVersion: String by project
+val minimalExportParserVersion: String by project
+val c2EggParserVersion: String by project
 
 // Bedalton
 val bedaltonLocalFilesVersion: String by project
@@ -163,19 +165,26 @@ kotlin {
         val commonMain by getting {
             dependencies {
 
+                // Kotlin/Kotlinx
                 implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:$kotlinxCoroutinesVersion")
                 implementation("org.jetbrains.kotlinx:kotlinx-cli:$kotlinxCliVersion") {
                     exclude("com.bedalton", "kotlinx-nodejs")
                 }
-                implementation("bedalton.creatures:creatures-common-cli:$creaturesCommonCLIVersion") {
-                    exclude("com.bedalton", "kotlinx-nodejs")
-                }
                 implementation("org.jetbrains.kotlinx:kotlinx-serialization-core:$kotlinxSerializationVersion")
                 implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:$kotlinxSerializationVersion")
-                implementation("bedalton.creatures:creatures-common:$creaturesCommonCoreVersion")
-                implementation("bedalton.creatures:breed-util:$creaturesBreedUtilVersion")
-                implementation("bedalton.creatures:common-genome:$creaturesCommonGenomeVersion")
-                implementation("bedalton.creatures:common-sprite:$creaturesSpriteUtilVersion")
+
+                // Creatures
+                implementation("com.bedalton.creatures:creatures-common-cli:$creaturesCommonCLIVersion") {
+                    exclude("com.bedalton", "kotlinx-nodejs")
+                }
+                implementation("com.bedalton.creatures:creatures-common:$creaturesCommonCoreVersion")
+                implementation("com.bedalton.creatures:breed-util:$creaturesBreedUtilVersion")
+                implementation("com.bedalton.creatures:common-genome:$creaturesCommonGenomeVersion")
+                implementation("com.bedalton.creatures:common-sprite:$creaturesSpriteUtilVersion")
+                implementation("com.bedalton.creatures:minimal-export-parser:$minimalExportParserVersion")
+                implementation("com.bedalton.creatures:c2-egg-parser:$c2EggParserVersion")
+
+                // Bedalton
                 implementation("com.bedalton:local-files:$bedaltonLocalFilesVersion")
                 implementation("com.bedalton:app-support:$bedaltonAppSupportVersion")
                 implementation("com.bedalton:common-log:$bedaltonCommonLogVersion")

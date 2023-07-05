@@ -6,9 +6,9 @@ import com.bedalton.log.ConsoleColors.BOLD
 import com.bedalton.log.ConsoleColors.RESET
 import com.bedalton.io.bytes.*
 import com.bedalton.log.*
-import bedalton.creatures.genetics.gene.Gene
-import bedalton.creatures.genetics.gene.GeneFlags
-import bedalton.creatures.genetics.gene.GeneHeader
+import com.bedalton.creatures.genetics.gene.Gene
+import com.bedalton.creatures.genetics.gene.GeneFlags
+import com.bedalton.creatures.genetics.gene.GeneHeader
 import com.bedalton.common.exceptions.IOException
 import com.bedalton.common.util.nullIfEmpty
 import kotlinx.cli.ArgType

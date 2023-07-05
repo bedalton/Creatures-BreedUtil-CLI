@@ -2,14 +2,14 @@
 
 package bedalton.creatures.breed.converter.cli
 
-import bedalton.creatures.breed.converter.breed.ConvertBreedTask
-import bedalton.creatures.breed.converter.breed.convertBreed
-import bedalton.creatures.breed.converter.breed.withShouldOverwriteCallback
-import bedalton.creatures.breed.converter.breed.withSizeMods
+import com.bedalton.creatures.breed.converter.breed.ConvertBreedTask
+import com.bedalton.creatures.breed.converter.breed.convertBreed
+import com.bedalton.creatures.breed.converter.breed.withShouldOverwriteCallback
+import com.bedalton.creatures.breed.converter.breed.withSizeMods
 import bedalton.creatures.breed.converter.cli.internal.GenusArg
 import bedalton.creatures.breed.converter.cli.internal.createOverwriteCallback
-import bedalton.creatures.cli.GameArgType
-import bedalton.creatures.common.structs.GameVariant
+import com.bedalton.creatures.cli.GameArgType
+import com.bedalton.creatures.common.structs.GameVariant
 import com.bedalton.app.AppRequestTermination
 import com.bedalton.app.exitNativeWithError
 import com.bedalton.app.getCurrentWorkingDirectory

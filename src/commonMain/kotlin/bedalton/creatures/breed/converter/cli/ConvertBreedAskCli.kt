@@ -2,11 +2,11 @@
 
 package bedalton.creatures.breed.converter.cli
 
-import bedalton.creatures.breed.converter.breed.*
+import com.bedalton.creatures.breed.converter.breed.*
 import bedalton.creatures.breed.converter.cli.internal.*
-import bedalton.creatures.cli.GameArgType
-import bedalton.creatures.common.structs.GameVariant
-import bedalton.creatures.common.structs.isC2e
+import com.bedalton.creatures.cli.GameArgType
+import com.bedalton.creatures.common.structs.GameVariant
+import com.bedalton.creatures.common.structs.isC2e
 import com.bedalton.app.exitNativeWithError
 import com.bedalton.app.getCurrentWorkingDirectory
 import com.bedalton.cli.readInt

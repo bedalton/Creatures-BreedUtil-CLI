@@ -1,8 +1,8 @@
 package bedalton.creatures.breed.converter.cli
 
 import bedalton.creatures.breed.converter.cli.internal.SizeModArg
-import bedalton.creatures.cli.GameArgType
-import bedalton.creatures.sprite.util.ColorEncoding
+import com.bedalton.creatures.cli.GameArgType
+import com.bedalton.creatures.sprite.util.ColorEncoding
 import com.bedalton.cli.Flag
 import kotlinx.cli.*
 

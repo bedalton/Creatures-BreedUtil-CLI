@@ -1,8 +1,8 @@
 package bedalton.creatures.breed.converter.cli.internal
 
-import bedalton.creatures.breed.converter.breed.BreedRegexUtil.getBreedSpriteFileRegex
-import bedalton.creatures.breed.converter.breed.ConvertBreedTask
-import bedalton.creatures.common.util.getGenusInt
+import com.bedalton.creatures.breed.converter.breed.BreedRegexUtil.getBreedSpriteFileRegex
+import com.bedalton.creatures.breed.converter.breed.ConvertBreedTask
+import com.bedalton.creatures.common.util.getGenusInt
 import com.bedalton.app.exitNativeWithError
 import com.bedalton.cli.unescapeCLIPathAndQualify
 import com.bedalton.common.util.ensureEndsWith

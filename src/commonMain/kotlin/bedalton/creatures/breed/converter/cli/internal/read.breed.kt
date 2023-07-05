@@ -2,13 +2,13 @@
 
 package bedalton.creatures.breed.converter.cli.internal
 
-import bedalton.creatures.breed.converter.breed.BreedRegexUtil.BREED_SPRITE_FILE_REGEX
-import bedalton.creatures.breed.converter.breed.BreedRegexUtil.getBreedSpriteFileRegex
-import bedalton.creatures.breed.converter.breed.ConvertBreedTask
-import bedalton.creatures.breed.converter.breed.withFiles
-import bedalton.creatures.common.structs.GameVariant
-import bedalton.creatures.common.util.getGenusInt
-import bedalton.creatures.common.util.getGenusString
+import com.bedalton.creatures.breed.converter.breed.BreedRegexUtil.BREED_SPRITE_FILE_REGEX
+import com.bedalton.creatures.breed.converter.breed.BreedRegexUtil.getBreedSpriteFileRegex
+import com.bedalton.creatures.breed.converter.breed.ConvertBreedTask
+import com.bedalton.creatures.breed.converter.breed.withFiles
+import com.bedalton.creatures.common.structs.GameVariant
+import com.bedalton.creatures.common.util.getGenusInt
+import com.bedalton.creatures.common.util.getGenusString
 import com.bedalton.app.exitNativeWithError
 import com.bedalton.cli.unescapeCLIPathAndQualify
 import com.bedalton.common.util.PathUtil

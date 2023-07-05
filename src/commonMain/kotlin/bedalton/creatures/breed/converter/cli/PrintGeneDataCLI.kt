@@ -2,15 +2,15 @@ package bedalton.creatures.breed.converter.cli
 
 import bedalton.creatures.breed.converter.cli.internal.formatted
 import bedalton.creatures.breed.converter.cli.internal.yesNullable
-import bedalton.creatures.breed.converter.genome.GeneFilter
-import bedalton.creatures.genetics.gene.Gene
-import bedalton.creatures.genetics.parser.GenomeParser
 import com.bedalton.app.exitNativeWithError
 import com.bedalton.app.getCurrentWorkingDirectory
 import com.bedalton.cli.Flag
 import com.bedalton.cli.readInt
 import com.bedalton.common.util.PathUtil
 import com.bedalton.common.util.nullIfEmpty
+import com.bedalton.creatures.breed.converter.genome.GeneFilter
+import com.bedalton.creatures.genetics.gene.Gene
+import com.bedalton.creatures.genetics.parser.GenomeParser
 import com.bedalton.log.Log
 import com.bedalton.vfs.ScopedFileSystem
 import kotlinx.cli.ArgType
@@ -21,7 +21,6 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.async
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
-import kotlinx.serialization.json.encodeToJsonElement
 import kotlin.coroutines.CoroutineContext
 
 class PrintGeneDataCLI(
@@ -29,12 +28,12 @@ class PrintGeneDataCLI(
     private val jobs: MutableList<Deferred<Int>>
 ) : Subcommand(name = "print-genome", "Prints gene data as json") {
 
-    val genome by argument(
+    private val genome by argument(
         ArgType.String,
         description = "Genome, Export or C2 egg file to parse"
     )
 
-    val ask by option(
+    private val ask by option(
         Flag,
         "guided",
         "g",
@@ -48,125 +47,125 @@ class PrintGeneDataCLI(
         "Whether to print or hide genes by default; Value: [y]es/[n]o or [p]rint/[h]ide; Default: YES"
     ).default(true)
 
-    val biochemicalEmitterGenes by option(
+    private val biochemicalEmitterGenes by option(
         PrintArg,
         "emitters",
         description = "Print biochemical emitter gene information; Value: [y]es/[no] or [p]rint/[h]ide"
     )
 
-    val biochemicalHalfLivesGenes by option(
+    private val biochemicalHalfLivesGenes by option(
         PrintArg,
         "half-lives",
         description = "Print biochemical half-lives genes; Value: [y]es/[no] or [p]rint/[h]ide"
     )
 
-    val biochemicalInitialConcentrations by option(
+    private val biochemicalInitialConcentrations by option(
         PrintArg,
         "initial-concentrations",
         description = "Print biochemical initial concentration gene information; Value: [y]es/[no] or [p]rint/[h]ide"
     )
 
-    val biochemicalReactions by option(
+    private val biochemicalReactions by option(
         PrintArg,
         "reactions",
         description = "Print biochemical reactions information; Value: [y]es/[no] or [p]rint/[h]ide",
     )
 
-    val biochemicalReceptors by option(
+    private val biochemicalReceptors by option(
         PrintArg,
         "receptors",
         description = "Print biochemical reaction gene output; Value: [y]es/[no] or [p]rint/[h]ide"
     )
 
-    val neuroEmitterGenes by option(
+    private val neuroEmitterGenes by option(
         PrintArg,
         "neuro-emitters",
         description = "Print neuro emitter genes;"
     )
 
-    val brainOrganGenes by option(
+    private val brainOrganGenes by option(
         PrintArg,
         "bain-organs",
         description = "Print brain organ genes;"
     )
 
-    val brainLobeGenes by option(
+    private val brainLobeGenes by option(
         PrintArg,
         "brain-lobes",
         description = "Print brain lobe gene information;"
     )
 
-    val brainTractGenes by option(
+    private val brainTractGenes by option(
         PrintArg,
         "brain-tracts",
         description = "Print brain tract gene information; [y]es/[n]o or [p]rint/[h]ide"
     )
 
-    val appearanceGenes by option(
+    private val appearanceGenes by option(
         PrintArg,
         "appearance",
         description = "Print appearance gene information;"
     )
 
-    val stimulusGenes by option(
+    private val stimulusGenes by option(
         PrintArg,
         "stimuli",
         description = "Print stimulus gene information;"
     )
-    val gaitGenes by option(
+    private val gaitGenes by option(
         PrintArg,
         "gaits",
         description = "Print gait gene information;"
     )
-    val genusGenes by option(
+    private val genusGenes by option(
         PrintArg,
         "genus",
         description = "Print genus gene information;"
     )
 
-    val instinctGenes by option(
+    private val instinctGenes by option(
         PrintArg,
         "instincts",
         description = "Print instinct gene information;"
     )
 
-    val pigmentGenes by option(
+    private val pigmentGenes by option(
         PrintArg,
         "pigments",
         description = "Print pigment gene information;"
     )
 
-    val pigmentBleedGenes by option(
+    private val pigmentBleedGenes by option(
         PrintArg,
         "pigment-bleeds",
         description = "Print pigment bleed gene information;"
     )
 
-    val poseGenes by option(
+    private val poseGenes by option(
         PrintArg,
         "poses",
         description = "Print pose gene information;"
     )
 
-    val facialExpressionGenes by option(
+    private val facialExpressionGenes by option(
         PrintArg,
         "facial-expressions",
         description = "Print facial expression genes;"
     )
 
-    val organGenes by option(
+    private val organGenes by option(
         PrintArg,
         "organs",
         description = "Print organ genes; Value: [y]es/[no] or [p]rint/[h]ide"
     )
 
-    val genomeVariant by option(
+    private val genomeVariant by option(
         ArgType.Int,
         "gene-variant",
         description = "Filter for genome gene variant 0..8, or egg genome 0..1"
     )
 
-    val pretty by option(
+    private val pretty by option(
         Flag,
         "pretty",
         "p",
