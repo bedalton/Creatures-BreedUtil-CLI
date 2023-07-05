@@ -3,7 +3,7 @@ package bedalton.creatures.breed.converter.cli.internal
 import com.bedalton.app.exitNativeWithError
 import kotlinx.cli.ArgType
 
-object SizeModArg: ArgType<Map<Int, Float>>(true) {
+object SizeModArg: ArgType<Map<Int, Double>>(true) {
 
     private val argsDelimiterRegex by lazy {
         "[,;|]+".toRegex()
@@ -17,8 +17,8 @@ object SizeModArg: ArgType<Map<Int, Float>>(true) {
     override val description: kotlin.String
         get() = "Age scale settings {age:int}={scale:Double}; i.e `0=0.7`"
 
-    override fun convert(value: kotlin.String, name: kotlin.String): Map<kotlin.Int, Float> {
-        val out: MutableMap<kotlin.Int, Float> = mutableMapOf()
+    override fun convert(value: kotlin.String, name: kotlin.String): Map<kotlin.Int, kotlin.Double> {
+        val out: MutableMap<kotlin.Int, kotlin.Double> = mutableMapOf()
         val args = value.split(argsDelimiterRegex)
         for (arg in args) {
             val parts =  arg.split(equalsRegex)
@@ -26,7 +26,7 @@ object SizeModArg: ArgType<Map<Int, Float>>(true) {
             if (parts.size != 2) {
                 exitNativeWithError(1, formatErrorMessage)
             }
-            val scale = parts[1].toFloatOrNull()
+            val scale = parts[1].toDoubleOrNull()
                 ?: exitNativeWithError(1, formatErrorMessage)
 
             // Fill ages array with wildcard if not already set
