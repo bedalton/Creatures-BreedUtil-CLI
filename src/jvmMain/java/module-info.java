@@ -1,4 +1,4 @@
-module bedalton.creatures.breed.cli {
+module com.bedalton.creatures.breed.cli {
     requires kotlinx.serialization.json;
     requires kotlin.stdlib;
     requires kotlinx.cli;
@@ -16,5 +16,5 @@ module bedalton.creatures.breed.cli {
     requires com.bedalton.coroutines;
     requires com.bedalton.log;
 
-    exports bedalton.creatures.breed.converter.cli;
+    exports com.bedalton.creatures.breed.converter.cli;
 }
