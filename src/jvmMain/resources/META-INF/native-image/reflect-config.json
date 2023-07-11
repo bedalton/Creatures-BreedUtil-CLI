@@ -27,7 +27,7 @@
     "allDeclaredConstructors":true
   },
   {
-    "name": "bedalton.creatures.breed.converter.cli.Main_jvmKt",
+    "name": "com.bedalton.creatures.breed.converter.cli.Main_jvmKt",
     "allPublicMethods": true,
     "allDeclaredFields":true,
     "allDeclaredMethods":true,

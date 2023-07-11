@@ -135,29 +135,29 @@ kotlin {
     }
     macosX64() {
         binaries.executable {
-            this.entryPoint = "bedalton.creatures.breed.converter.cli.main"
+            this.entryPoint = "com.bedalton.creatures.breed.converter.cli.main"
         }
     }
     macosArm64() {
         binaries.executable {
-            this.entryPoint = "bedalton.creatures.breed.converter.cli.main"
+            this.entryPoint = "com.bedalton.creatures.breed.converter.cli.main"
         }
     }
     linuxX64() {
         binaries.executable {
-            this.entryPoint = "bedalton.creatures.breed.converter.cli.main"
+            this.entryPoint = "com.bedalton.creatures.breed.converter.cli.main"
         }
     }
 
     linuxArm64() {
         binaries.executable {
-            this.entryPoint = "bedalton.creatures.breed.converter.cli.main"
+            this.entryPoint = "com.bedalton.creatures.breed.converter.cli.main"
         }
     }
     mingwX64() {
 
         binaries.executable {
-            this.entryPoint = "bedalton.creatures.breed.converter.cli.main"
+            this.entryPoint = "com.bedalton.creatures.breed.converter.cli.main"
         }
     }
     sourceSets {
@@ -238,7 +238,7 @@ kotlin {
 }
 
 application {
-    mainClass.set("bedalton.creatures.breed.converter.cli.Main_jvmKt")
+    mainClass.set("com.bedalton.creatures.breed.converter.cli.Main_jvmKt")
 }
 
 graalvmNative {
@@ -266,7 +266,7 @@ tasks.filter { graalNativeTaskRegex.matches(it.name) }.forEach {
 
 tasks.withType<ShadowJar> {
     manifest {
-        attributes("Main-Class" to "bedalton.creatures.breed.converter.cli.Main_jvmKt")
+        attributes("Main-Class" to "com.bedalton.creatures.breed.converter.cli.Main_jvmKt")
     }
     archiveClassifier.set("all")
     val main by kotlin.jvm().compilations
