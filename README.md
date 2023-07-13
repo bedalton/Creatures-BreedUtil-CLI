@@ -206,7 +206,7 @@ not moving.
 arms.  
 **Note:** Manual editing of the combined arm ATTs may be necessary
 
-![Two images of a male C1 horse norn. One with his arm across his stomach, and the another with an arm raised up as if saying hi](images/progressive-arms.png)
+![Two images of a male C1 horse norn. One with his arm across his stomach, and the another with an arm raised up as if saying hi](src/commonMain/resources/images/progressive-arms.png)
 
 #### Missing Tails:
 
