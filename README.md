@@ -50,7 +50,7 @@ This is a command line program, and must be run from the CMD program on Windows 
 
 ### Install
 
-1. Navigate to the [Breed Util Releases](https://github.com/bedalton/creatures-breed-util/releases) page on GitHub
+1. Navigate to the [Breed Util Releases](https://github.com/bedalton/Creatures-BreedUtil-CLI/releases) page on GitHub
 2. Download the most recent release for your OS
     - Windows (x64)
     - MacOS (x64) - 64-bit Macs (or Arm64 Macs with Rosetta)
