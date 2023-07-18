@@ -7,6 +7,7 @@ import com.bedalton.creatures.common.structs.GameVariant
 import com.bedalton.creatures.common.structs.isC1e
 import com.bedalton.creatures.common.structs.isC2e
 import com.bedalton.common.util.PathUtil
+import com.bedalton.creatures.breed.converter.cli.whiteBackgroundBlackText
 import com.bedalton.log.ConsoleColors
 import com.bedalton.log.Log
 
@@ -15,7 +16,7 @@ internal suspend fun readProgressiveArms(task: ConvertBreedTask, toGame: GameVar
     // If C1e -> C2e, convert arms progressive?
     if (toGame.isC2e && (fromGame == null || fromGame.isC1e)) {
         Log.i {
-            "${ConsoleColors.WHITE_BACKGROUND}${ConsoleColors.BLACK}If converting from C1e to C2e, front facing arm poses can be mimicked using side arm poses.\n" +
+            "${whiteBackgroundBlackText}If converting from C1e to C2e, front facing arm poses can be mimicked using side arm poses.\n" +
                     "\t*This feature is experimental and may require manual ATT editing for best results*${ConsoleColors.RESET}"
         }
         if (subcommand.progressive || yes("${ConsoleColors.BOLD}Use experimental C1e to C2e arm conversion feature?${ConsoleColors.RESET}")) {

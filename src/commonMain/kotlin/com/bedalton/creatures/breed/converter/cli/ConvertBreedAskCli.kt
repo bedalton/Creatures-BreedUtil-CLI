@@ -10,7 +10,9 @@ import com.bedalton.creatures.common.structs.isC2e
 import com.bedalton.app.exitNativeWithError
 import com.bedalton.app.getCurrentWorkingDirectory
 import com.bedalton.cli.readInt
+import com.bedalton.common.util.Platform
 import com.bedalton.common.util.className
+import com.bedalton.common.util.platform
 import com.bedalton.log.ConsoleColors.BLACK
 import com.bedalton.log.ConsoleColors.BOLD
 import com.bedalton.log.ConsoleColors.RED
@@ -29,6 +31,12 @@ import kotlinx.coroutines.async
 import kotlin.coroutines.CoroutineContext
 
 const val ASK_CLI_NAME = "ask"
+
+val whiteBackgroundBlackText get() = if(platform == Platform.WINDOWS) {
+    WHITE_BACKGROUND + BLACK
+} else {
+    WHITE_BACKGROUND + BLACK
+}
 
 class ConvertBreedAskCli(private val coroutineContext: CoroutineContext, private val jobs: MutableList<Deferred<Int>>) :
     ConvertBreedSubcommandBase(ASK_CLI_NAME, "Step by step breed conversion walk-through") {
@@ -84,15 +92,14 @@ class ConvertBreedAskCli(private val coroutineContext: CoroutineContext, private
         task.withOverwriteExisting(overwriteExisting)
         task.withOverwriteNone(overwriteNone)
 
-
         // Explain task
         Log.i {
-            "\n${WHITE_BACKGROUND}${BLACK}This program will walk you through your breed conversion\n" +
+            "\n${whiteBackgroundBlackText}This program will walk you through your breed conversion\n" +
                     "\t- When asked for files, you may drag them into the command window\n" +
                     "\t- Multiple files should be separated by spaces\n" +
                     "\t- Paths will be relative to: $baseDirectory\n" +
-                    "After answering each question press ${BLACK + BOLD}enter$BLACK on your keyboard to continue\n" +
-                    "**Type $BLACK$BOLD\"exit\"$BLACK or $BLACK$BOLD\"cancel\"$BLACK at any time to cancel this conversion$RESET\n\n"
+                    "After answering each question press ${BLACK+BOLD}enter$RESET${whiteBackgroundBlackText} on your keyboard to continue\n" +
+                    "**Type ${BLACK+BOLD}\"exit\"$RESET${whiteBackgroundBlackText} or ${BLACK+BOLD}\"cancel\"$RESET$whiteBackgroundBlackText at any time to cancel this conversion$RESET\n\n"
         }
 
         // Target game
