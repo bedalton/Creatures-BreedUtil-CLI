@@ -52,37 +52,37 @@ class PrintGeneDataCLI(
         PrintArg,
         "default",
         "x",
-        "Whether to print or hide genes by default; Value: [y]es/[n]o or [p]rint/[h]ide; Default: YES"
+        "Whether to print or hide genes by default"
     ).default(true)
 
     private val biochemicalEmitterGenes by option(
         PrintArg,
         "emitters",
-        description = "Print biochemical emitter gene information; Value: [y]es/[no] or [p]rint/[h]ide"
+        description = "Print biochemical emitter gene information"
     )
 
     private val biochemicalHalfLivesGenes by option(
         PrintArg,
         "half-lives",
-        description = "Print biochemical half-lives genes; Value: [y]es/[no] or [p]rint/[h]ide"
+        description = "Print biochemical half-lives genes"
     )
 
     private val biochemicalInitialConcentrations by option(
         PrintArg,
         "initial-concentrations",
-        description = "Print biochemical initial concentration gene information; Value: [y]es/[no] or [p]rint/[h]ide"
+        description = "Print biochemical initial concentration gene information"
     )
 
     private val biochemicalReactions by option(
         PrintArg,
         "reactions",
-        description = "Print biochemical reactions information; Value: [y]es/[no] or [p]rint/[h]ide",
+        description = "Print biochemical reactions information",
     )
 
     private val biochemicalReceptors by option(
         PrintArg,
         "receptors",
-        description = "Print biochemical reaction gene output; Value: [y]es/[no] or [p]rint/[h]ide"
+        description = "Print biochemical reaction gene output"
     )
 
     private val neuroEmitterGenes by option(
@@ -106,7 +106,7 @@ class PrintGeneDataCLI(
     private val brainTractGenes by option(
         PrintArg,
         "brain-tracts",
-        description = "Print brain tract gene information; [y]es/[n]o or [p]rint/[h]ide"
+        description = "Print brain tract gene information"
     )
 
     private val appearanceGenes by option(
@@ -164,7 +164,7 @@ class PrintGeneDataCLI(
     private val organGenes by option(
         PrintArg,
         "organs",
-        description = "Print organ genes; Value: [y]es/[no] or [p]rint/[h]ide"
+        description = "Print organ genes"
     )
 
     private val genomeVariant by option(
@@ -234,6 +234,8 @@ class PrintGeneDataCLI(
         }
 
         val fs = ScopedFileSystem(listOfNotNull(
+            genomePath,
+            PathUtil.getWithoutLastPathComponent(genomePath),
             output?.let { PathUtil.getWithoutLastPathComponent(it) },
             output
         ))
