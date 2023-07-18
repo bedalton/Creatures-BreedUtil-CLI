@@ -296,8 +296,6 @@ afterEvaluate {
                 val source = File(projectDir, "src" + File.separator + otherName + main)
                 if (source.exists()) {
                     Files.createSymbolicLink(Paths.get(".", "src", sourceName + main), Paths.get(".", otherName + main))
-                } else {
-                    throw Exception("Cannot create symlinks for arm target $sourceName$main, as source folder for $otherName$main does not exist")
                 }
             }
         }
