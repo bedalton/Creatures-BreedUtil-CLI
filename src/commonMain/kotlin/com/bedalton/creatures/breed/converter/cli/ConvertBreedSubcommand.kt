@@ -40,7 +40,6 @@ class ConvertBreedSubcommand(
         "Target game for breed files"
     )
 
-    @Suppress("SpellCheckingInspection")
     override val outputGenus by option(
         GenusArg,
         "genus",
@@ -103,6 +102,7 @@ class ConvertBreedSubcommand(
                 .withOutputGenome(outputGenome?.let {
                     PathUtil.ensureAbsolutePath(unescapeCLIPath(it), currentWorkingDirectory)
                 })
+                .withSmoothScaling(smoothScale)
                 .withSizeMods(sizeMods)
                 .withOutputGenomeGenus(outputGenus)
                 .withShouldOverwriteCallback(
