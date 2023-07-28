@@ -1,19 +1,20 @@
 @file:Suppress("unused")
 
 package com.bedalton.creatures.breed.converter.cli.internal
-import com.bedalton.creatures.breed.converter.breed.Breed
-import com.bedalton.creatures.breed.converter.genome.AlterGenomeOptions
-import com.bedalton.creatures.breed.converter.genome.alterGenome
-import com.bedalton.creatures.cli.PartBreedArg
-import com.bedalton.creatures.common.util.getGenusInt
+
 import com.bedalton.app.exitNativeWithError
 import com.bedalton.app.getCurrentWorkingDirectory
 import com.bedalton.cli.Flag
 import com.bedalton.cli.unescapeCLIPathAndQualify
 import com.bedalton.common.util.PathUtil
-import com.bedalton.common.util.nullIfEmpty
-import com.bedalton.vfs.*
 import com.bedalton.common.util.clamp
+import com.bedalton.common.util.nullIfEmpty
+import com.bedalton.creatures.breed.converter.breed.Breed
+import com.bedalton.creatures.breed.converter.genome.AlterGenomeOptions
+import com.bedalton.creatures.breed.converter.genome.alterGenome
+import com.bedalton.creatures.cli.PartBreedArg
+import com.bedalton.creatures.common.util.getGenusInt
+import com.bedalton.vfs.*
 import kotlinx.cli.ArgType
 import kotlinx.cli.ExperimentalCli
 import kotlinx.cli.Subcommand
@@ -46,7 +47,6 @@ internal class AlterAppearanceSubCommand(private val coroutineContext: Coroutine
         description = "The default breed to use for all body parts. "
     )
 
-    @Suppress("SpellCheckingInspection")
     private val outputGenomeGenus by option(
         GenusArg,
         "genome-genus",
@@ -163,7 +163,7 @@ internal class AlterAppearanceSubCommand(private val coroutineContext: Coroutine
             ?: exitNativeWithError(ERROR_CODE__BAD_INPUT_FILE) {
                 "Input genome must be a non-null, absolute file path"
             }
-        val outputGenomeFile = outputGenomeFile?.let {unescapeCLIPathAndQualify(it, currentWorkingDirectory) }
+        val outputGenomeFile = outputGenomeFile?.let { unescapeCLIPathAndQualify(it, currentWorkingDirectory) }
         val roots = listOfNotNull(
             PathUtil.getWithoutLastPathComponent(inputGenomeFile) ?: inputGenomeFile,
             outputGenomeFile?.let { PathUtil.getWithoutLastPathComponent(outputGenomeFile) ?: outputGenomeFile},
@@ -212,4 +212,3 @@ internal class AlterAppearanceSubCommand(private val coroutineContext: Coroutine
     }
 
 }
-
