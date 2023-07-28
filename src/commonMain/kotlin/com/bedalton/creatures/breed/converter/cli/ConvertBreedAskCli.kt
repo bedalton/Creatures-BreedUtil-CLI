@@ -2,17 +2,15 @@
 
 package com.bedalton.creatures.breed.converter.cli
 
+import com.bedalton.app.exitNativeWithError
+import com.bedalton.app.getCurrentWorkingDirectory
+import com.bedalton.cli.readInt
+import com.bedalton.common.util.className
 import com.bedalton.creatures.breed.converter.breed.*
 import com.bedalton.creatures.breed.converter.cli.internal.*
 import com.bedalton.creatures.cli.GameArgType
 import com.bedalton.creatures.common.structs.GameVariant
 import com.bedalton.creatures.common.structs.isC2e
-import com.bedalton.app.exitNativeWithError
-import com.bedalton.app.getCurrentWorkingDirectory
-import com.bedalton.cli.readInt
-import com.bedalton.common.util.Platform
-import com.bedalton.common.util.className
-import com.bedalton.common.util.platform
 import com.bedalton.log.ConsoleColors.BLACK
 import com.bedalton.log.ConsoleColors.BOLD
 import com.bedalton.log.ConsoleColors.RED
@@ -30,18 +28,11 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.async
 import kotlin.coroutines.CoroutineContext
 
-const val ASK_CLI_NAME = "ask"
-
-val whiteBackgroundBlackText get() = if(platform == Platform.WINDOWS) {
-    WHITE_BACKGROUND + BLACK
-} else {
-    WHITE_BACKGROUND + BLACK
-}
 
 class ConvertBreedAskCli(private val coroutineContext: CoroutineContext, private val jobs: MutableList<Deferred<Int>>) :
     ConvertBreedSubcommandBase(ASK_CLI_NAME, "Step by step breed conversion walk-through") {
 
-    val toGame by argument(
+    private val toGame by argument(
         GameArgType,
         "target-game",
         description = "The target game for conversion"
@@ -199,6 +190,10 @@ class ConvertBreedAskCli(private val coroutineContext: CoroutineContext, private
             Log.e { "$WHITE_BACKGROUND$RED${BOLD}Conversion failed with exit code: ${code}$RESET" }
         }
         return code
+    }
+
+    companion object {
+        const val ASK_CLI_NAME = "ask"
     }
 }
 
