@@ -27,7 +27,7 @@ suspend fun getGenomeFromFile(file: String, genomeIndex: Int = 0): Genome {
     return when (extension) {
         "creature", "exp" -> parseExport(bytes, genomeIndex)
         "gen" -> parseGenome(bytes)
-        "egg" -> parseGenome(bytes)
+        "egg" -> parseC2Egg(bytes, genomeIndex)
         else -> {
             val magic = bytes.copyOfRange(0, 3).decodeToString().lowercase()
             if (magic == "gene" || magic == "gen2" || magic == "gen3") {
