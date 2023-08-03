@@ -3,7 +3,7 @@
 package com.bedalton.creatures.breed.converter.cli.internal
 
 import com.bedalton.log.*
-import com.bedalton.creatures.breed.converter.cli.ASK_CLI_NAME
+import com.bedalton.creatures.breed.converter.cli.ConvertBreedAskCli.Companion.ASK_CLI_NAME
 import kotlinx.cli.ExperimentalCli
 import kotlinx.cli.Subcommand
 import kotlin.math.min
