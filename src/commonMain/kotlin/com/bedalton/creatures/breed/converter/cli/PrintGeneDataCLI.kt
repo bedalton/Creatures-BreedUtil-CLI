@@ -231,6 +231,7 @@ class PrintGeneDataCLI(
         val json = Json {
             ignoreUnknownKeys = true
             prettyPrint = pretty
+            encodeDefaults = true
         }
 
         val fs = ScopedFileSystem(listOfNotNull(
