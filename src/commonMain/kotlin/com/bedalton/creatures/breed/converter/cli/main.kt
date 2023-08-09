@@ -10,10 +10,7 @@ import com.bedalton.common.coroutines.mapAsync
 import com.bedalton.app.setIsCLI
 import com.bedalton.common.util.Platform
 import com.bedalton.common.util.platform
-import com.bedalton.log.LOG_DEBUG
-import com.bedalton.log.Log
-import com.bedalton.log.enableCLIColors
-import com.bedalton.log.iIf
+import com.bedalton.log.*
 import kotlinx.cli.ArgParser
 import kotlinx.coroutines.CompletableDeferred
 import kotlinx.coroutines.Deferred
@@ -30,28 +27,34 @@ suspend fun runMain(args: Array<String>, commandName: String = defaultCommandNam
     if (args.any { it like "--debug" }) {
         Log.setMode(LOG_DEBUG, true)
     }
-    var theArgs = args.filterNot { it like "--debug" }.toTypedArray()
-    Log.iIf(LOG_DEBUG) { "runMain" }
+    if (args.any { it like "--verbose" }) {
+        Log.setMode(LOG_DEBUG, true)
+        Log.setMode(LOG_VERBOSE, true)
+    }
+    var theArgs = args.filterNot { it like "--debug" || it like "--verbose" }.toTypedArray()
+    Log.iIf(LOG_VERBOSE) { "runMain" }
     setIsCLI(true)
-    Log.iIf(LOG_DEBUG) { "Set IS CLI" }
+    Log.iIf(LOG_VERBOSE) { "Set IS CLI" }
     val parser = ArgParser(commandName)
-    Log.iIf(LOG_DEBUG) { "Did init Arg Parser" }
+    Log.iIf(LOG_VERBOSE) { "Did init Arg Parser" }
     // Create subcommand instances
     val convertBreedSubcommand = ConvertBreedSubcommand(coroutineContext, jobs)
-    Log.iIf(LOG_DEBUG) { "Convert Breed Added" }
     val alterAppearanceSubCommand = AlterAppearanceSubCommand(coroutineContext, jobs)
-    Log.iIf(LOG_DEBUG) { "Alter Appearance Added" }
     val printGeneData = PrintGeneDataCLI(coroutineContext, jobs)
-    Log.iIf(LOG_DEBUG) { "Convert breed Ask Added" }
     val convertBreedAskSubCommand = ConvertBreedAskCli(coroutineContext, jobs)
-    Log.iIf(LOG_DEBUG) { "Convert breed Ask Added" }
-
+    val printSchemaCommand = ProtoSchemaCLI(coroutineContext, jobs)
     // Add subcommands to parse
-    val subcommands = arrayOf(convertBreedSubcommand, convertBreedAskSubCommand, alterAppearanceSubCommand, printGeneData)
+    val subcommands = arrayOf(
+        convertBreedSubcommand,
+        convertBreedAskSubCommand,
+        alterAppearanceSubCommand,
+        printGeneData,
+        printSchemaCommand
+    )
 
-    Log.iIf(LOG_DEBUG) { "Setting subcommands" }
+    Log.iIf(LOG_VERBOSE) { "Setting subcommands" }
     parser.subcommands(*subcommands)
-    Log.iIf(LOG_DEBUG) { "Set subcommands" }
+    Log.iIf(LOG_VERBOSE) { "Set subcommands" }
 
     // Get command names to possibly insert the ASK cli sub command to args
     theArgs = getArgsWithAsking(

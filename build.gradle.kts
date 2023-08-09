@@ -39,8 +39,10 @@ val kotlinxSerializationVersion: String by project
 // Creatures
 val creaturesCommonCLIVersion: String by project
 val creaturesCommonCoreVersion: String by project
+val creaturesCommonCreatureDataVersion: String by project
 val creaturesCommonGenomeVersion: String by project
 val creaturesBreedUtilVersion: String by project
+val creaturesBreedRendererVersion: String by project
 val creaturesSpriteUtilVersion: String by project
 val minimalExportParserVersion: String by project
 val c2EggParserVersion: String by project
@@ -172,13 +174,16 @@ kotlin {
                 }
                 implementation("org.jetbrains.kotlinx:kotlinx-serialization-core:$kotlinxSerializationVersion")
                 implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:$kotlinxSerializationVersion")
+                implementation("org.jetbrains.kotlinx:kotlinx-serialization-protobuf:$kotlinxSerializationVersion")
 
                 // Creatures
                 implementation("com.bedalton.creatures:creatures-common-cli:$creaturesCommonCLIVersion") {
                     exclude("com.bedalton", "kotlinx-nodejs")
                 }
                 implementation("com.bedalton.creatures:creatures-common:$creaturesCommonCoreVersion")
+                implementation("com.bedalton.creatures:common-creature-data:$creaturesCommonCreatureDataVersion")
                 implementation("com.bedalton.creatures:breed-util:$creaturesBreedUtilVersion")
+                implementation("com.bedalton.creatures:breed-renderer:$creaturesBreedRendererVersion")
                 implementation("com.bedalton.creatures:common-genome:$creaturesCommonGenomeVersion")
                 implementation("com.bedalton.creatures:common-sprite:$creaturesSpriteUtilVersion")
                 implementation("com.bedalton.creatures:minimal-export-parser:$minimalExportParserVersion")
@@ -224,6 +229,7 @@ kotlin {
             languageSettings.optIn("kotlinx.cli.ExperimentalCli")
             languageSettings.optIn("kotlinx.coroutines.DelicateCoroutinesApi")
             languageSettings.optIn("kotlinx.coroutines.ExperimentalCoroutinesApi")
+            languageSettings.optIn("kotlinx.serialization.ExperimentalSerializationApi")
             configurations.all {
                 resolutionStrategy {
 

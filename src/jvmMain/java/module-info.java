@@ -4,9 +4,11 @@ module com.bedalton.creatures.breed.cli {
     requires kotlinx.cli;
     requires korlibs.korim;
     requires kotlinx.coroutines.core;
+    requires kotlinx.serialization.protobuf;
 
     requires com.bedalton.creatures.exports.minimal;
     requires com.bedalton.creatures.cli;
+    requires com.bedalton.creatures.breed.render;
     requires com.bedalton.files;
     requires com.bedalton.app;
     requires com.bedalton.common;

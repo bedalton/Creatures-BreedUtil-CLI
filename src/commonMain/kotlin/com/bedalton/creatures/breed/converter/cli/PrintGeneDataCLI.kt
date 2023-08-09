@@ -2,18 +2,19 @@
 
 package com.bedalton.creatures.breed.converter.cli
 
-import com.bedalton.creatures.breed.converter.cli.internal.formatted
-import com.bedalton.creatures.breed.converter.cli.internal.getGenomeFromFile
-import com.bedalton.creatures.breed.converter.cli.internal.yesNullable
 import com.bedalton.app.exitNativeWithError
 import com.bedalton.app.getCurrentWorkingDirectory
 import com.bedalton.cli.Flag
 import com.bedalton.cli.readInt
 import com.bedalton.common.util.PathUtil
 import com.bedalton.common.util.nullIfEmpty
+import com.bedalton.creatures.breed.converter.cli.internal.*
 import com.bedalton.creatures.breed.converter.genome.GeneFilter
-import com.bedalton.creatures.genetics.gene.Gene
+import com.bedalton.creatures.genetics.genome.GenomeCompiler
+import com.bedalton.io.bytes.toBase64
 import com.bedalton.log.Log
+import com.bedalton.vfs.ERROR_CODE__FAILED_WRITE
+import com.bedalton.vfs.FileSystem
 import com.bedalton.vfs.ScopedFileSystem
 import kotlinx.cli.ArgType
 import kotlinx.cli.Subcommand
@@ -23,6 +24,7 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.async
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
+import kotlinx.serialization.protobuf.ProtoBuf
 import kotlin.coroutines.CoroutineContext
 
 class PrintGeneDataCLI(
@@ -184,8 +186,27 @@ class PrintGeneDataCLI(
         ArgType.String,
         "output",
         "o",
-        "File to write JSON data to"
+        "File to write data to"
     )
+
+    private val outputFormat by option(
+        ArgType.Choice<OutputFormat> { it.name.lowercase() },
+        "output-format",
+        description = "Output protobuf schema"
+    ).default(OutputFormat.JSON)
+
+
+    private val outputData by option(
+        ArgType.Choice<OutputData> { it.commonName },
+        "output-data",
+        description = "Kind of data to output"
+    ).default(OutputData.GENES)
+
+    private val printColors by option(
+        Flag,
+        "print-colors",
+        description = "Print color information"
+    ).default(false)
 
     override fun execute() {
         jobs.add(GlobalScope.async(coroutineContext) {
@@ -212,6 +233,20 @@ class PrintGeneDataCLI(
         }
 
 
+        val fs = ScopedFileSystem(
+            listOfNotNull(
+                genomePath,
+                PathUtil.getWithoutLastPathComponent(genomePath),
+                output?.let { PathUtil.getWithoutLastPathComponent(it) },
+                output
+            )
+        )
+
+        if (!fs.fileExists(genomePath)) {
+            exitNativeWithError(1, "Genome does not exist at $genomePath")
+        }
+
+
         val genome = try {
             getGenomeFromFile(genomePath, genomeIndex)
         } catch (e: Exception) {
@@ -227,32 +262,72 @@ class PrintGeneDataCLI(
 
         val filter = buildFilter()
         val genes = filter.filterGenes(genome)
+        val printColors = printColors
 
+        if (printColors && outputData != OutputData.GENES) {
+            exitNativeWithError(1) { "Cannot output color data with non `--output-data \"genes\"` option" }
+        }
+
+        val colors = if (printColors) {
+            getColorsForPrint(genome, genomeVariant)
+        } else {
+            null
+        }
+
+        val results = PrintResults(genome.version, genes, colors)
+
+        when (outputFormat) {
+            OutputFormat.JSON -> writeJson(fs, output, results)
+            OutputFormat.PROTBUF -> writeProtoBuf(fs, output, results)
+        }
+        return 0
+    }
+
+    private suspend fun writeJson(fs: FileSystem, output: String?, result: PrintResults) {
         val json = Json {
             ignoreUnknownKeys = true
             prettyPrint = pretty
             encodeDefaults = true
         }
-
-        val fs = ScopedFileSystem(listOfNotNull(
-            genomePath,
-            PathUtil.getWithoutLastPathComponent(genomePath),
-            output?.let { PathUtil.getWithoutLastPathComponent(it) },
-            output
-        ))
-        if (!fs.fileExists(genomePath)) {
-            exitNativeWithError(1, "Genome does not exist at $genomePath")
-        }
-
-        val jsonString = json.encodeToString<List<Gene>>(genes)
-        if (output != null) {
-            fs.write(output, jsonString)
-        } else {
-            Log.i {
-                jsonString
+        val jsonString = when (outputData) {
+            OutputData.GENES -> json.encodeToString(PrintResults.serializer(), result)
+            OutputData.GENE_BYTE_PAIRS -> {
+                val geneBytePairs = GenomeCompiler.writeGenesBytePairs(result.genes).map { GeneBytePairBase64(it) }
+                json.encodeToString<List<GeneBytePairBase64>>(geneBytePairs)
             }
         }
-        return 0
+
+        if (output == null) {
+            Log.i { jsonString }
+            return
+        }
+        try {
+            fs.write(output, jsonString)
+        } catch (e: Exception) {
+            exitNativeWithError(ERROR_CODE__FAILED_WRITE, "Failed to write json data to file; ${e.formatted()}")
+        }
+    }
+
+    private suspend fun writeProtoBuf(fs: FileSystem, output: String?, results: PrintResults) {
+        val protobuf = ProtoBuf {
+            encodeDefaults = true
+        }
+        val bytes = when (outputData) {
+            OutputData.GENES -> protobuf.encodeToByteArray(PrintResults.serializer(), results)
+            OutputData.GENE_BYTE_PAIRS -> {
+                val geneBytePairs = GenomeCompiler.writeGenesBytePairs(results.genes)
+                protobuf.encodeToByteArray(GeneBytePairs.serializer(), GeneBytePairs(geneBytePairs))
+            }
+        }
+        if (output == null) {
+            Log.i { bytes.toBase64() }
+            return
+        }
+        try {
+            fs.write(output, bytes)
+        } catch (e: Exception) {
+            exitNativeWithError(ERROR_CODE__FAILED_WRITE, "Failed to write protobuf data to file; ${e.formatted()}")
+        }
     }
 
     private suspend fun buildFilter(): GeneFilter {
@@ -315,5 +390,15 @@ private object PrintArg : ArgType<Boolean>(true) {
             )
         }
     }
+}
 
+
+enum class OutputFormat {
+    JSON,
+    PROTBUF
+}
+
+enum class OutputData(val commonName: String) {
+    GENES("genes"),
+    GENE_BYTE_PAIRS("gene-byte-pairs")
 }
