@@ -2,19 +2,20 @@
 
 package com.bedalton.creatures.breed.converter.cli
 
+import com.bedalton.app.AppRequestTermination
+import com.bedalton.app.exitNativeWithError
+import com.bedalton.app.getCurrentWorkingDirectory
+import com.bedalton.cli.unescapeCLIPath
+import com.bedalton.common.util.PathUtil
 import com.bedalton.creatures.breed.converter.breed.ConvertBreedTask
 import com.bedalton.creatures.breed.converter.breed.convertBreed
 import com.bedalton.creatures.breed.converter.breed.withShouldOverwriteCallback
 import com.bedalton.creatures.breed.converter.breed.withSizeMods
 import com.bedalton.creatures.breed.converter.cli.internal.GenusArg
 import com.bedalton.creatures.breed.converter.cli.internal.createOverwriteCallback
+import com.bedalton.creatures.breed.converter.cli.internal.flatten
 import com.bedalton.creatures.cli.GameArgType
 import com.bedalton.creatures.common.structs.GameVariant
-import com.bedalton.app.AppRequestTermination
-import com.bedalton.app.exitNativeWithError
-import com.bedalton.app.getCurrentWorkingDirectory
-import com.bedalton.cli.unescapeCLIPath
-import com.bedalton.common.util.PathUtil
 import com.bedalton.vfs.ERROR_CODE__BAD_INPUT_FILE
 import kotlinx.cli.ArgType
 import kotlinx.cli.ExperimentalCli
@@ -103,7 +104,6 @@ class ConvertBreedSubcommand(
                     PathUtil.ensureAbsolutePath(unescapeCLIPath(it), currentWorkingDirectory)
                 })
                 .withSmoothScaling(smoothScale)
-                .withSizeMods(sizeMods)
                 .withOutputGenomeGenus(outputGenus)
                 .withShouldOverwriteCallback(
                     createOverwriteCallback(
@@ -113,9 +113,16 @@ class ConvertBreedSubcommand(
                     )
                 )
                 .withAsync(noAsync != true)
+                // Add scaling mods, to scale parts differently
+                .withSizeMods(sizeMods)
+                .withHeadSizeMods(headSizeMod.flatten())
+                .withBodySizeMods(bodySizeMod.flatten())
+                .withLegSizeMods(legsSizeMod.flatten())
+                .withArmSizeMods(armsSizeMod.flatten())
+                .withTailSizeMods(tailSizeMod.flatten())
 
             try {
-                convertBreed(task)
+                convertBreed(task, coroutineContext)
             } catch (_: AppRequestTermination) {
                 1
             }

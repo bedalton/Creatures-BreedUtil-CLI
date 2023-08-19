@@ -1,9 +1,9 @@
 package com.bedalton.creatures.breed.converter.cli
 
 import com.bedalton.creatures.breed.converter.cli.internal.SizeModArg
+import com.bedalton.creatures.breed.converter.cli.internal.flatten
 import com.bedalton.creatures.cli.GameArgType
 import com.bedalton.creatures.sprite.util.ColorEncoding
-import com.bedalton.cli.Flag
 import kotlinx.cli.*
 
 @ExperimentalCli
@@ -166,9 +166,38 @@ sealed class ConvertBreedSubcommandBase(
         description = "The amount to scale each age group by. Format: `age=scale`\n\t-Use *=scale to set same scale for all ages"
     ).multiple()
 
+    internal val headSizeMod by option(
+        type=SizeModArg,
+        fullName = "head-scale",
+        description = "The amount to scale the head body part by age. Format: `age=scale` or `*=scale`"
+    ).multiple()
+
+    internal val bodySizeMod by option(
+        type=SizeModArg,
+        fullName = "body-scale",
+        description = "The amount to scale the body part by age . Format: `age=scale` or `*=scale`"
+    ).multiple()
+
+    internal val legsSizeMod by option(
+        type=SizeModArg,
+        fullName = "legs-scale",
+        description = "The amount to scale leg parts by age. Format: `age=scale` or `*=scale`"
+    ).multiple()
+
+    internal val armsSizeMod by option(
+        type=SizeModArg,
+        fullName = "arms-scale",
+        description = "The amount to scale arms parts by age. Format: `age=scale` or `*=scale`"
+    ).multiple()
+
+    internal val tailSizeMod by option(
+        type=SizeModArg,
+        fullName = "tail-scale",
+        description = "The amount to scale tail parts by age. Format: `age=scale` or `*=scale`"
+    ).multiple()
+
+
     internal val sizeMods by lazy {
-        mSizeMod
-            .flatMap { it.entries }
-            .associate { it.key to it.value }
+        mSizeMod.flatten()
     }
 }

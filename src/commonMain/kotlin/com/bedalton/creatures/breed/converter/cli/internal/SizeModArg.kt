@@ -31,7 +31,7 @@ object SizeModArg: ArgType<Map<Int, Double>>(true) {
 
             // Fill ages array with wildcard if not already set
             if (parts[0].trim().singleOrNull() == '*') {
-                for (age in listOf(0,1,2,3,4,5,6,7)) {
+                for (age in 0..7) {
                     if (!out.containsKey(age)) {
                         out[age] = scale
                     }
