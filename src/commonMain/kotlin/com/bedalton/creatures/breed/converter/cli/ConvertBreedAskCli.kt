@@ -99,8 +99,8 @@ class ConvertBreedAskCli(
                     "\t- When asked for files, you may drag them into the command window\n" +
                     "\t- Multiple files should be separated by spaces\n" +
                     "\t- Paths will be relative to: $baseDirectory\n" +
-                    "After answering each question press ${BLACK+BOLD}enter$RESET${whiteBackgroundBlackText} on your keyboard to continue\n" +
-                    "**Type ${BLACK+BOLD}\"exit\"$RESET${whiteBackgroundBlackText} or ${BLACK+BOLD}\"cancel\"$RESET$whiteBackgroundBlackText at any time to cancel this conversion$RESET\n\n"
+                    "After answering each question press ${BLACK + BOLD}enter$RESET${whiteBackgroundBlackText} on your keyboard to continue\n" +
+                    "**Type ${BLACK + BOLD}\"exit\"$RESET${whiteBackgroundBlackText} or ${BLACK + BOLD}\"cancel\"$RESET$whiteBackgroundBlackText at any time to cancel this conversion$RESET\n\n"
         }
 
         // Target game
