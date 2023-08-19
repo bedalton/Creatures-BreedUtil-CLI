@@ -33,14 +33,9 @@ sealed class ConvertBreedSubcommandBase(
         description = "Sprite color encoding",
     )
 
-    abstract val outputGenus: String?
+    internal abstract val outputGenus: String?
 
-    internal open val outputBreed: String? by option(
-        ArgType.String,
-        "breed",
-        shortName = "b",
-        description = "The output breed slot for these body parts"
-    )
+    internal abstract val outputBreed: String?
 
 
     internal val inputGenus by option(

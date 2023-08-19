@@ -53,6 +53,14 @@ class ConvertBreedAskCli(private val coroutineContext: CoroutineContext, private
         description = "The output genus: [n]orn, [g]rendel, [e]ttin, [s]hee, geat"
     )
 
+    override val outputBreed: String? by option(
+        ArgType.String,
+        "breed",
+        shortName = "b",
+        description = "The output breed slot for these body parts"
+    )
+
+
     override fun execute() {
         val job = GlobalScope.async(coroutineContext) {
             try {
