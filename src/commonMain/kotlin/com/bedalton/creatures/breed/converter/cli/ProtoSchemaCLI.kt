@@ -20,7 +20,7 @@ import kotlin.coroutines.CoroutineContext
 
 class ProtoSchemaCLI(
     private val coroutineContext: CoroutineContext,
-    private val jobs: MutableList<Deferred<Int>>
+    private val jobs: MutableList<Deferred<Int>>,
 ) : Subcommand(name = "proto-schema", "Outputs the genome support file proto3 schema files") {
 
     private val output by option(

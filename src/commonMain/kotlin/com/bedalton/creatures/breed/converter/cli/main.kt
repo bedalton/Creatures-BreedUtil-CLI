@@ -12,9 +12,7 @@ import com.bedalton.common.util.Platform
 import com.bedalton.common.util.platform
 import com.bedalton.log.*
 import kotlinx.cli.ArgParser
-import kotlinx.coroutines.CompletableDeferred
-import kotlinx.coroutines.Deferred
-import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.*
 
 
 suspend fun runMain(args: Array<String>, commandName: String = defaultCommandName): Int = coroutineScope {
@@ -37,12 +35,15 @@ suspend fun runMain(args: Array<String>, commandName: String = defaultCommandNam
     Log.iIf(LOG_VERBOSE) { "Set IS CLI" }
     val parser = ArgParser(commandName)
     Log.iIf(LOG_VERBOSE) { "Did init Arg Parser" }
+
+    val job = Job(coroutineContext.job)
+
     // Create subcommand instances
-    val convertBreedSubcommand = ConvertBreedSubcommand(coroutineContext, jobs)
-    val alterAppearanceSubCommand = AlterAppearanceSubCommand(coroutineContext, jobs)
-    val printGeneData = PrintGeneDataCLI(coroutineContext, jobs)
-    val convertBreedAskSubCommand = ConvertBreedAskCli(coroutineContext, jobs)
-    val printSchemaCommand = ProtoSchemaCLI(coroutineContext, jobs)
+    val convertBreedSubcommand = ConvertBreedSubcommand(job, jobs)
+    val alterAppearanceSubCommand = AlterAppearanceSubCommand(job, jobs)
+    val printGeneData = PrintGeneDataCLI(job, jobs)
+    val convertBreedAskSubCommand = ConvertBreedAskCli(job, jobs)
+    val printSchemaCommand = ProtoSchemaCLI(job, jobs)
     // Add subcommands to parse
     val subcommands = arrayOf(
         convertBreedSubcommand,
@@ -68,6 +69,7 @@ suspend fun runMain(args: Array<String>, commandName: String = defaultCommandNam
     val code = try {
         parser.parse(theArgs)
         val results = jobs.mapAsync { it.await() }
+        job.join()
         if (results.all { it == 0 }) {
             0
         } else if (results.size == 1) {

@@ -29,8 +29,10 @@ import kotlinx.coroutines.async
 import kotlin.coroutines.CoroutineContext
 
 
-class ConvertBreedAskCli(private val coroutineContext: CoroutineContext, private val jobs: MutableList<Deferred<Int>>) :
-    ConvertBreedSubcommandBase(ASK_CLI_NAME, "Step by step breed conversion walk-through") {
+class ConvertBreedAskCli(
+    private val coroutineContext: CoroutineContext,
+    private val jobs: MutableList<Deferred<Int>>
+) : ConvertBreedSubcommandBase(ASK_CLI_NAME, "Step by step breed conversion walk-through") {
 
     private val toGame by argument(
         GameArgType,
@@ -193,7 +195,7 @@ class ConvertBreedAskCli(private val coroutineContext: CoroutineContext, private
         }
 
         // Run and get result code
-        val code = convertBreed(task)
+        val code = convertBreed(task, coroutineContext)
         if (code != 0) {
             Log.e { "$WHITE_BACKGROUND$RED${BOLD}Conversion failed with exit code: ${code}$RESET" }
         }
