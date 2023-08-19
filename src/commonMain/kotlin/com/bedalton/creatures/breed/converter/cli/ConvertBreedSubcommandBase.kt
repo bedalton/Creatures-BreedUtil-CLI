@@ -1,5 +1,6 @@
 package com.bedalton.creatures.breed.converter.cli
 
+import com.bedalton.cli.Flag
 import com.bedalton.creatures.breed.converter.cli.internal.SizeModArg
 import com.bedalton.creatures.breed.converter.cli.internal.flatten
 import com.bedalton.creatures.cli.GameArgType
@@ -82,7 +83,7 @@ sealed class ConvertBreedSubcommandBase(
     ).default(false)
 
     internal val noTails by option(
-        ArgType.Boolean,
+        Flag,
         "no-tail",
         description = "Do not create tail files (even if none are present)",
     ).default(false)
