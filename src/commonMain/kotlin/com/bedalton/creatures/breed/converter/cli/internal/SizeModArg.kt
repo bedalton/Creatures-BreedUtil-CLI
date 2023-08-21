@@ -41,7 +41,7 @@ object SizeModArg: ArgType<Map<Int, Double>>(true) {
 
             val age = parts[0].toIntOrNull()
                 ?: exitNativeWithError(1, formatErrorMessage)
-            out[age] to scale
+            out[age] = scale
         }
         return out
     }
