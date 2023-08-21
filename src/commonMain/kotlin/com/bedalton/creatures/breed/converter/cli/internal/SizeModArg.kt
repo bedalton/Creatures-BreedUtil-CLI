@@ -26,8 +26,21 @@ object SizeModArg: ArgType<Map<Int, Double>>(true) {
             if (parts.size != 2) {
                 exitNativeWithError(1, formatErrorMessage)
             }
-            val scale = parts[1].toDoubleOrNull()
-                ?: exitNativeWithError(1, formatErrorMessage)
+
+            val scale = parts[1].let { scaleString ->
+                val isPercent = scaleString.endsWith('%')
+                val scale = if (isPercent) {
+                    scaleString.substring(0, scaleString.lastIndex - 1)
+                        .toDoubleOrNull()
+                } else {
+                    scaleString.toDoubleOrNull()
+                }
+                if (scale != null && isPercent) {
+                    scale / 100.0
+                } else {
+                    scale
+                }
+            } ?: exitNativeWithError(1, formatErrorMessage)
 
             // Fill ages array with wildcard if not already set
             if (parts[0].trim().singleOrNull() == '*') {
