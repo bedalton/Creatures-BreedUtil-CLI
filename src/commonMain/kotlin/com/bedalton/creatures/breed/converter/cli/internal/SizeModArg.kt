@@ -3,7 +3,7 @@ package com.bedalton.creatures.breed.converter.cli.internal
 import com.bedalton.app.exitNativeWithError
 import kotlinx.cli.ArgType
 
-object SizeModArg: ArgType<Map<Int, Double>>(true) {
+object SizeModArg : ArgType<Map<Int, Double>>(true) {
 
     private val argsDelimiterRegex by lazy {
         "[,;|]+".toRegex()
@@ -21,8 +21,13 @@ object SizeModArg: ArgType<Map<Int, Double>>(true) {
         val out: MutableMap<kotlin.Int, kotlin.Double> = mutableMapOf()
         val args = value.split(argsDelimiterRegex)
         for (arg in args) {
-            val parts =  arg.split(equalsRegex)
+            var parts = arg.split(equalsRegex)
 
+            if (parts.size == 1) {
+                args[0].toFloatOrNull()
+                    ?: exitNativeWithError(1, formatErrorMessage)
+                parts = listOf("*", parts[0])
+            }
             if (parts.size != 2) {
                 exitNativeWithError(1, formatErrorMessage)
             }
