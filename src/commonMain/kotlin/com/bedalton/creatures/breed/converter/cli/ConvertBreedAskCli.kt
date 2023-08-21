@@ -83,6 +83,13 @@ class ConvertBreedAskCli(
 
     private suspend fun run(): Int {
         val task = ConvertBreedTask()
+            .withSizeMods(sizeMods)
+            .withHeadSizeMods(headSizeMod.flatten())
+            .withBodySizeMods(bodySizeMod.flatten())
+            .withLegSizeMods(legsSizeMod.flatten())
+            .withArmSizeMods(armsSizeMod.flatten())
+            .withTailSizeMods(tailSizeMod.flatten())
+
         val baseDirectory = getCurrentWorkingDirectory()
             ?: exitNativeWithError(
                 ERROR_CODE__BAD_INPUT_FILE,
