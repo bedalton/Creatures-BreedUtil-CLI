@@ -56,7 +56,7 @@ val bedaltonCommonCoreVersion: String by project
 val bedaltonCommonCoroutinesVersion: String by project
 
 bedaltonConfig {
-    additionalLibraries += listOf("breed-util")
+    additionalLibraries = listOf("breed-util")
 }
 
 kotlin {
