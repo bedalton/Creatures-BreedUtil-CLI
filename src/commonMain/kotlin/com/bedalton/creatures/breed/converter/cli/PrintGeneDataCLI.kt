@@ -15,7 +15,7 @@ import com.bedalton.io.bytes.toBase64
 import com.bedalton.log.Log
 import com.bedalton.vfs.ERROR_CODE__FAILED_WRITE
 import com.bedalton.vfs.FileSystem
-import com.bedalton.vfs.ScopedFileSystem
+import com.bedalton.vfs.UnscopedFileSystem
 import kotlinx.cli.ArgType
 import kotlinx.cli.Subcommand
 import kotlinx.cli.default
@@ -233,14 +233,7 @@ class PrintGeneDataCLI(
         }
 
 
-        val fs = ScopedFileSystem(
-            listOfNotNull(
-                genomePath,
-                PathUtil.getWithoutLastPathComponent(genomePath),
-                output?.let { PathUtil.getWithoutLastPathComponent(it) },
-                output
-            )
-        )
+        val fs = UnscopedFileSystem()
 
         if (!fs.fileExists(genomePath)) {
             exitNativeWithError(1, "Genome does not exist at $genomePath")

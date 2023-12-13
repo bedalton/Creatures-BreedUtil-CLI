@@ -170,7 +170,7 @@ internal class AlterAppearanceSubCommand(private val coroutineContext: Coroutine
             currentWorkingDirectory,
         )
         val breed = breed
-        val fs = roots.nullIfEmpty()?.let { ScopedFileSystem(roots) } ?: LocalFileSystem ?: UnscopedFileSystem()
+        val fs = roots.nullIfEmpty()?.let { UnscopedFileSystem() } ?: LocalFileSystem ?: UnscopedFileSystem()
         val overwriteDefault = if (overwriteExisting) {
             OverwriteDefault.ALWAYS
         } else if (overwriteNone) {

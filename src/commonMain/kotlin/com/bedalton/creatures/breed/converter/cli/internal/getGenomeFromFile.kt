@@ -7,6 +7,7 @@ import com.bedalton.creatures.genetics.genome.Genome
 import com.bedalton.creatures.genetics.parser.GenomeParseException
 import com.bedalton.creatures.genetics.parser.GenomeParser
 import com.bedalton.common.util.PathUtil
+import com.bedalton.creatures.exports.minimal.ExportParser
 import com.bedalton.io.bytes.ByteStreamReader
 import com.bedalton.vfs.*
 
@@ -14,7 +15,7 @@ suspend fun getGenomeFromFile(file: String, genomeIndex: Int = 0): Genome {
     if (!PathUtil.isAbsolute(file)) {
         throw PathNotAbsoluteException(file, "Genome path must be absolute")
     }
-    val fs = ScopedFileSystem(listOfNotNull(PathUtil.getWithoutLastPathComponent(file), file))
+    val fs = UnscopedFileSystem()
     if (!fs.fileExists(file)) {
         throw FileNotFoundException(file, "Genome file does not exist")
     }
@@ -61,7 +62,7 @@ private suspend fun parseGenome(bytes: ByteArray): Genome {
 private suspend fun parseExport(bytes: ByteArray, genomeIndex: Int): Genome {
 
     // Get export data
-    val data = ExportRenderData.from(bytes)
+    val data = ExportParser.parseExport(bytes)
 
     // Ensure has export data in list
     // Pray files can technically have more than one creature in it
