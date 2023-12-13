@@ -111,13 +111,6 @@ sealed class ConvertBreedSubcommandBase(
         description = "The location of atts to convert if desired"
     )
 
-    internal val smoothScale by option(
-        Flag,
-        "smooth-scale",
-        description = "Smooth image while scaling"
-    )
-
-
     internal val outputDirectory by option(
         ArgType.String,
         fullName = "output",
@@ -192,6 +185,17 @@ sealed class ConvertBreedSubcommandBase(
         description = "The amount to scale tail parts by age. Format: `age=scale` or `*=scale`"
     ).multiple()
 
+    internal val smoothScale by option(
+        Flag,
+        "smooth-scale",
+        description = "Smooth image while scaling (Deprecated, on by default)"
+    ).default(false)
+
+    internal val noSmoothScale by option(
+        Flag,
+        "nearest-neighbor",
+        description = "Use nearest neighbor scaling"
+    ).default(false)
 
     internal val sizeMods by lazy {
         mSizeMod.flatten()

@@ -89,6 +89,7 @@ class ConvertBreedAskCli(
             .withLegSizeMods(legsSizeMod.flatten())
             .withArmSizeMods(armsSizeMod.flatten())
             .withTailSizeMods(tailSizeMod.flatten())
+            .withSmoothScaling(!noSmoothScale)
 
         val baseDirectory = getCurrentWorkingDirectory()
             ?: exitNativeWithError(
