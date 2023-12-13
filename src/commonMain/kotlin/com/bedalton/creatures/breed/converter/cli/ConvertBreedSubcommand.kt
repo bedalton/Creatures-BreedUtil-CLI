@@ -9,10 +9,7 @@ import com.bedalton.cli.unescapeCLIPath
 import com.bedalton.common.util.PathUtil
 import com.bedalton.creatures.breed.converter.ERROR_CODE__GENUS_INVALID
 import com.bedalton.creatures.breed.converter.ERROR_CODE__INVALID_GENUS_BREED_TUPLE
-import com.bedalton.creatures.breed.converter.breed.ConvertBreedTask
-import com.bedalton.creatures.breed.converter.breed.convertBreed
-import com.bedalton.creatures.breed.converter.breed.withShouldOverwriteCallback
-import com.bedalton.creatures.breed.converter.breed.withSizeMods
+import com.bedalton.creatures.breed.converter.breed.*
 import com.bedalton.creatures.breed.converter.cli.internal.GenusArg
 import com.bedalton.creatures.breed.converter.cli.internal.createOverwriteCallback
 import com.bedalton.creatures.breed.converter.cli.internal.flatten
@@ -98,7 +95,7 @@ class ConvertBreedSubcommand(
                     PathUtil.ensureAbsolutePath(unescapeCLIPath(it), currentWorkingDirectory)
                 }.toTypedArray()
             )
-                .withFromGameVariantString(fromGame?.code)
+                .withFromGame(fromGame)
                 .withEncoding(encoding?.simpleName)
                 .withOutputBreedGenus(outputGenus)
                 .withOutputBreed(outputBreed)
