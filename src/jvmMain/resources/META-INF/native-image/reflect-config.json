@@ -1,9 +1,5 @@
 [
   {
-    "name": "kotlin.reflect.jvm.internal.ReflectionFactoryImpl",
-    "allDeclaredConstructors":true
-  },
-  {
     "name": "kotlin.KotlinVersion",
     "allPublicMethods": true,
     "allDeclaredFields":true,
@@ -28,6 +24,20 @@
   },
   {
     "name": "com.bedalton.creatures.breed.converter.cli.Main_jvmKt",
+    "allPublicMethods": true,
+    "allDeclaredFields":true,
+    "allDeclaredMethods":true,
+    "allDeclaredConstructors":true
+  },
+
+  {
+    "name": "com.bedalton.creatures.common.structs.GameVariant$Companion",
+    "methods" : [
+      { "name" : "getValues", "parameterTypes" : [] }
+    ]
+  },
+  {
+    "name": "com.bedalton.creatures.common.structs.GameVariant",
     "allPublicMethods": true,
     "allDeclaredFields":true,
     "allDeclaredMethods":true,
