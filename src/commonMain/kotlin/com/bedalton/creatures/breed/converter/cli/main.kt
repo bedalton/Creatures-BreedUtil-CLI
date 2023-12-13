@@ -36,14 +36,32 @@ suspend fun runMain(args: Array<String>, commandName: String = defaultCommandNam
     val parser = ArgParser(commandName)
     Log.iIf(LOG_VERBOSE) { "Did init Arg Parser" }
 
-    val job = Job(coroutineContext.job)
+    Log.iIf(LOG_VERBOSE) { "Creating Job from `coroutineContext.job`" }
+    val job = coroutineContext[Job]?.let { Job(it) } ?: Job()
+    Log.iIf(LOG_VERBOSE) { "Did create job from `coroutineContext.job`" }
 
     // Create subcommand instances
+
+    Log.iIf(LOG_VERBOSE) { "Initializing: Convert Breed Sub Command" }
     val convertBreedSubcommand = ConvertBreedSubcommand(job, jobs)
+    Log.iIf(LOG_VERBOSE) { "Initialized" }
+
+    Log.iIf(LOG_VERBOSE) { "Initializing: Alter Appearance Sub Command" }
     val alterAppearanceSubCommand = AlterAppearanceSubCommand(job, jobs)
+    Log.iIf(LOG_VERBOSE) { "Initialized" }
+
+    Log.iIf(LOG_VERBOSE) { "Initializing: Print Gene Sub Command" }
     val printGeneData = PrintGeneDataCLI(job, jobs)
+    Log.iIf(LOG_VERBOSE) { "Initialized" }
+
+    Log.iIf(LOG_VERBOSE) { "Initializing: Convert Breed Ask Sub Command" }
     val convertBreedAskSubCommand = ConvertBreedAskCli(job, jobs)
+    Log.iIf(LOG_VERBOSE) { "Initialized" }
+
+    Log.iIf(LOG_VERBOSE) { "Initializing: Print Schema Sub Command" }
     val printSchemaCommand = ProtoSchemaCLI(job, jobs)
+    Log.iIf(LOG_VERBOSE) { "Initialized" }
+
     // Add subcommands to parse
     val subcommands = arrayOf(
         convertBreedSubcommand,
@@ -94,5 +112,6 @@ suspend fun runMain(args: Array<String>, commandName: String = defaultCommandNam
         Log.i { "* Press enter to exit *" }
         readln()
     }
-    CompletableDeferred(code)
+    Log.i { "Conversion done!" }
+    CompletableDeferred(0)
 }.await()
