@@ -17,6 +17,7 @@ module com.bedalton.creatures.breed.cli {
     requires com.bedalton.creatures.breed.tasks;
     requires com.bedalton.coroutines;
     requires com.bedalton.log;
+    requires com.bedalton.creatures.genome.extractor;
 
     exports com.bedalton.creatures.breed.converter.cli;
 }

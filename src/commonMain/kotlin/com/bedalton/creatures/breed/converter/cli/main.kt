@@ -54,6 +54,10 @@ suspend fun runMain(args: Array<String>, commandName: String = defaultCommandNam
     val printGeneData = PrintGeneDataCLI(job, jobs)
     Log.iIf(LOG_VERBOSE) { "Initialized" }
 
+    Log.iIf(LOG_VERBOSE) { "Initializing: Print Schema Sub Command" }
+    val extractGenomeCommand = ExtractGenomeCommand(job, jobs)
+    Log.iIf(LOG_VERBOSE) { "Initialized" }
+
     Log.iIf(LOG_VERBOSE) { "Initializing: Convert Breed Ask Sub Command" }
     val convertBreedAskSubCommand = ConvertBreedAskCli(job, jobs)
     Log.iIf(LOG_VERBOSE) { "Initialized" }
@@ -67,6 +71,7 @@ suspend fun runMain(args: Array<String>, commandName: String = defaultCommandNam
         convertBreedSubcommand,
         convertBreedAskSubCommand,
         alterAppearanceSubCommand,
+        extractGenomeCommand,
         printGeneData,
         printSchemaCommand
     )
@@ -87,13 +92,12 @@ suspend fun runMain(args: Array<String>, commandName: String = defaultCommandNam
     val code = try {
         parser.parse(theArgs)
         val results = jobs.mapAsync { it.await() }
-        job.join()
         if (results.all { it == 0 }) {
             0
         } else if (results.size == 1) {
             results[0]
         } else {
-            8000
+            1
         }
     } catch (e: IllegalStateException) {
         if (e.message?.trim() like "Not implemented for JS!") {
@@ -112,6 +116,5 @@ suspend fun runMain(args: Array<String>, commandName: String = defaultCommandNam
         Log.i { "* Press enter to exit *" }
         readln()
     }
-    Log.i { "Conversion done!" }
-    CompletableDeferred(0)
-}.await()
+    exitNative(0)
+}

@@ -44,6 +44,7 @@ val creaturesCommonGenomeVersion: String by project
 val creaturesBreedUtilVersion: String by project
 val creaturesBreedRendererVersion: String by project
 val creaturesSpriteUtilVersion: String by project
+val creaturesGenomeExtractorVersion: String by project
 val minimalExportParserVersion: String by project
 val c2EggParserVersion: String by project
 
@@ -188,6 +189,7 @@ kotlin {
                 implementation("com.bedalton.creatures:common-sprite:$creaturesSpriteUtilVersion")
                 implementation("com.bedalton.creatures:minimal-export-parser:$minimalExportParserVersion")
                 implementation("com.bedalton.creatures:c2-egg-parser:$c2EggParserVersion")
+                implementation("com.bedalton.creatures:genome-extractor:$creaturesGenomeExtractorVersion")
 
                 // Bedalton
                 implementation("com.bedalton:local-files:$bedaltonLocalFilesVersion")
