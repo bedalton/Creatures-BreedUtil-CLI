@@ -71,7 +71,6 @@ internal class AlterAppearanceSubCommand(private val coroutineContext: Coroutine
         description = "Breed for legs"
     )
 
-
     private val arms by option(
         PartBreedArg(),
         "arms",
@@ -89,7 +88,6 @@ internal class AlterAppearanceSubCommand(private val coroutineContext: Coroutine
         "hair",
         description = "Breed for hair"
     )
-
 
     private val red by option(
         ArgType.Int,
@@ -109,6 +107,12 @@ internal class AlterAppearanceSubCommand(private val coroutineContext: Coroutine
         description = "Blue tint to apply"
     )
 
+    private val jitterPigment by option(
+        Flag,
+        "jitter-pigment",
+        description = "Cause children's tints to be unpredictable"
+    ).default(false)
+
     private val swap by option(
         ArgType.Int,
         "swap",
@@ -120,6 +124,12 @@ internal class AlterAppearanceSubCommand(private val coroutineContext: Coroutine
         "rotation",
         description = "Color rotation or shifting of red, green and blue channels"
     )
+
+    private val jitterBleed by option(
+        Flag,
+        "jitter-bleed",
+        description = "Cause offspring's bleeds to be unpredictable"
+    ).default(false)
 
     private val alterSleepPose: Boolean by option(
         type = Flag,
@@ -141,7 +151,6 @@ internal class AlterAppearanceSubCommand(private val coroutineContext: Coroutine
         shortName = "x",
         description = "Skip existing files"
     ).default(false)
-
 
     override fun execute() {
         val job = GlobalScope.async (coroutineContext) {
@@ -196,10 +205,15 @@ internal class AlterAppearanceSubCommand(private val coroutineContext: Coroutine
                 hair = hair,
             ),
             red = red,
+            jitterRed = jitterPigment,
             green = green,
+            jitterGreen = jitterPigment,
             blue = blue,
+            jitterBlue = jitterPigment,
             swap = swap?.clamp(0, 255),
+            jitterSwap = jitterBleed,
             rotation = rotation,
+            jitterRotation = jitterBleed,
             overwriteDefault = overwriteDefault,
             shouldWriteCallback = createOverwriteCallback(
                 overwriteExisting,
